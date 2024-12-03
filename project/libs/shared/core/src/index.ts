@@ -1,1 +1,1 @@
-export * from './lib/core.module';
+//Здесь будут экспорты
