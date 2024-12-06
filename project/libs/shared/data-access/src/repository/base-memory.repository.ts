@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto';
 
-import { Entity, StorableEntity, EntityFactory } from '@project/core';
+import { Entity, StorableEntity, EntityFactory } from '@project/shared/core';
 import { Repository } from './repository.interface';
 
 export abstract class BaseMemoryRepository<T extends Entity & StorableEntity<ReturnType<T['toPOJO']>>> implements Repository<T> {
