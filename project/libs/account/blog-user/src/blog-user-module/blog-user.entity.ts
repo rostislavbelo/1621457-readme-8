@@ -4,7 +4,6 @@ export class BlogUserEntity extends Entity implements StorableEntity<AuthUser> {
   public email: string;
   public name: string;
   public registrationDate: Date;
-  public subscribers: string[];
   public avatarId?: string;
   public passwordHash: string;
 
@@ -23,7 +22,6 @@ export class BlogUserEntity extends Entity implements StorableEntity<AuthUser> {
     this.registrationDate = user.registrationDate;
     this.name = user.name;
     this.passwordHash = user.passwordHash;
-    this.subscribers = user.subscribers;
     this.avatarId = user.avatarId ?? undefined;
   }
 
@@ -34,7 +32,6 @@ export class BlogUserEntity extends Entity implements StorableEntity<AuthUser> {
       name: this.name,
       registrationDate: this.registrationDate,
       passwordHash: this.passwordHash,
-      subscribers: this.subscribers,
       avatarId: this.avatarId
     }
   }
