@@ -16,10 +16,10 @@ services:
     volumes:
       - readme.mongo.account:/data/db
 
-  typeoteka.user.mongo.ui:
+  readme.user.mongo.ui:
     image: mongo-express:1.0.2-20
     restart: always
-    container_name: typeoteka.user.mongo.ui
+    container_name: readme.user.mongo.ui
     ports:
       - 8081:8081
     environment:
