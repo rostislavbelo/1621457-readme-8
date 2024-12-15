@@ -1,1 +1,1 @@
-export * from './authentication-module/authentication.module';
+export { AuthenticationModule } from './authentication-module/authentication.module';
