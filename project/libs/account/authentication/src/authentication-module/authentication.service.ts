@@ -15,6 +15,9 @@ export class AuthenticationService {
     // Извлекаем настройки из конфигурации
     console.log(configService.get<string>('db.host'));
     console.log(configService.get<string>('db.user'));
+    console.log(configService.get<string>('db.port'));
+    console.log(configService.get<string>('db[port]'));
+    console.log(configService.get<string>('db'));
   }
     public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
     
