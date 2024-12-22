@@ -6,3 +6,54 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Post {
+  id               String     @id @default(uuid())
+  authorId         String     @map("author_id")
+  type             Type
+  content          Json
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  published        Boolean    @default(true)
+  reposted         Boolean    @default(false)
+  originalId       String?    @map("original_id")
+  originalAuthorId String?    @map("original_author_id")
+  tags             Tag[]
+  comments         Comment[]
+  favorite         Favorite[]
+  @@index([authorId])
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String
+  authorId  String   @map("author_id")
+  postId    String   @map("post_id")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("comments")
+}
+
+model Favorite {
+  id     String @id @default(uuid())
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  postId String @map("post_id")
+  userId String @map("user_id")
+  @@map("favorites")
+}
+
+model Tag {
+  name  String @id @unique
+  posts Post[]
+  @@map("tags")
+}
+
+enum Type {
+  TEXT
+  LINK
+  VIDEO  
+  QUOTE
+  PHOTO  
+}
