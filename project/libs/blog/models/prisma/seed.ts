@@ -98,7 +98,6 @@ async function bootstrap() {
     } finally {
         await prismaClient.$disconnect();
     }
-}
-  
+}  
 
 bootstrap();
