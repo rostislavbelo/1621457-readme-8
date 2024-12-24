@@ -1,0 +1,40 @@
+# Get all comments
+GET http://localhost:3000/api/comments HTTP/1.1
+
+###
+
+# Get comment by Id
+
+GET http://localhost:3000/api/comments/552618b5-b807-4e51-9df5-9a5234389817 HTTP/1.1
+
+###
+
+# Create a new comment
+
+POST http://localhost:3000/api/comments HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "New comment",
+  "postId": "ab04593b-da99-4fe3-8b4b-e06d82e2efdd",
+  "authorId": "6581762309c030b503e30512"
+}
+
+###
+
+# Delete a comment by id
+
+DELETE http://localhost:3000/api/comments/3ee2cc3b-81cc-4789-bb50-d20b73ec2c34 HTTP/1.1
+
+###
+
+# Update a comment by id
+
+# PATCH http://localhost:3000/api/comments/f39ed0ab-5129-4984-bd69-2ca375b55605 HTTP/1.1
+# Content-Type: application/json
+
+# {
+#   "title": "This is new title"
+# }
+
+###
