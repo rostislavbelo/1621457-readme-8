@@ -42,10 +42,17 @@ export class BlogCommentRepository extends BasePostgresRepository<
     return this.createEntityFromDocument(document);
   }
 
-  public async find(): Promise<BlogCommentEntity[]> {
+  public async find(postId: string): Promise<BlogCommentEntity[]> {
     const documents = await this.client.comment.findMany({
       take: MAX_COMMENT_LIMIT,
+      where: {
+        postId,
+      },
     });
+
+    if (!documents.length) {
+        throw new NotFoundException(`Comments not found.`);
+    }
 
     return documents.map((document) => this.createEntityFromDocument(document));
   }

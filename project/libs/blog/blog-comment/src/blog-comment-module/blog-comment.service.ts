@@ -12,8 +12,8 @@ export class BlogCommentService {
     return this.blogCommentRepository.findById(id);
   }
 
-  public async getAllComments(): Promise<BlogCommentEntity[]> {
-    return await this.blogCommentRepository.find();
+  public async getAllComments(id: string): Promise<BlogCommentEntity[]> {
+    return await this.blogCommentRepository.find(id);
   }
 
   public async createComment(
