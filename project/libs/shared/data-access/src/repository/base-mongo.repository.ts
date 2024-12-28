@@ -4,8 +4,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Entity, StorableEntity, EntityFactory } from '@project/shared/core';
 import { Repository } from './repository.interface';
 
-export abstract class BaseMongoRepository<
-  T extends Entity & StorableEntity<ReturnType<T['toPOJO']>>,
+export abstract class BaseMongoRepository<T extends Entity & StorableEntity<ReturnType<T['toPOJO']>>,
   DocumentType extends Document
 > implements Repository<T> {
 
@@ -13,7 +12,6 @@ export abstract class BaseMongoRepository<
     protected entityFactory: EntityFactory<T>,
     protected readonly model: Model<DocumentType>,
   ) {}
-
 
   protected createEntityFromDocument(document: DocumentType): T | null {
     if (! document) {
