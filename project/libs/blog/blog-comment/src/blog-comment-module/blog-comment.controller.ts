@@ -2,8 +2,8 @@ import {
     Controller,
     Get,
     Param,
-    Post,
-    Body,
+    // Post,
+    // Body,
     Delete,
     // Patch,
     HttpCode,
@@ -13,7 +13,7 @@ import {
   import { fillDto } from '@project/helpers';
   
   import { BlogCommentService } from './blog-comment.service';
-  import { CreateCommentDto } from './dto/create-comment.dto';
+  // import { CreateCommentDto } from './dto/create-comment.dto';
   // import { UpdateCommentDto } from './dto/update-comment.dto';
   import { CommentRdo } from './rdo/comment.rdo';
 
@@ -28,20 +28,20 @@ import {
       return fillDto(CommentRdo, commentEntity.toPOJO());
     }
   
-    @Get('/')
-    public async showAll(@Body('postId') postId: string) {
-      const blogCommentEntities = await this.blogCommentService.getAllComments(postId);
-      const comments = blogCommentEntities.map((blogComment) =>
-        blogComment.toPOJO()
-      );
-      return fillDto(CommentRdo, comments);
-    }
+    // @Get('/')
+    // public async showAll(@Body('postId') postId: string) {
+    //   const blogCommentEntities = await this.blogCommentService.getAllComments(postId);
+    //   const comments = blogCommentEntities.map((blogComment) =>
+    //     blogComment.toPOJO()
+    //   );
+    //   return fillDto(CommentRdo, comments);
+    // }
 
-    @Post('/')
-    public async create(@Body() dto: CreateCommentDto) {
-      const newComment = await this.blogCommentService.createComment(dto);
-      return fillDto(CommentRdo, newComment.toPOJO());
-    }
+    // @Post('/')
+    // public async create(@Body() dto: CreateCommentDto) {
+    //   const newComment = await this.blogCommentService.createComment(dto);
+    //   return fillDto(CommentRdo, newComment.toPOJO());
+    // }
   
     @Delete('/:id')
     @HttpCode(HttpStatus.NO_CONTENT)

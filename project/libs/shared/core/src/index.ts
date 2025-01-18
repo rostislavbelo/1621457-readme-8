@@ -8,6 +8,9 @@ export { QuotePost } from './lib/types/quote-post.interface';
 export { TextPost } from './lib/types/text-post.interface';
 export { VideoPost } from './lib/types/video-post.interface';
 export { Comment } from './lib/types/comment.interface';
-
 export { StorableEntity } from './lib/interfaces/storable-entity.interface';
 export { EntityFactory } from './lib/interfaces/entity-factory.interface';
+export { BlogContents } from './lib/types/blog-contents';
+export { PaginationResult } from './lib/types/pagination.interface';
+export { SortDirection } from './lib/types/sort-direction.enum';
+export { PostTypes } from './lib/types/post-types';

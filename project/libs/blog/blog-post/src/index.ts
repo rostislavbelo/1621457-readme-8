@@ -1,1 +1,1 @@
-export * from './lib/blog-post';
+export { BlogPostModule } from './blog-post-module/blog-post-module';

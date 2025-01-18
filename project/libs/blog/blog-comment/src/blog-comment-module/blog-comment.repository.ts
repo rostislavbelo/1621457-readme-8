@@ -42,35 +42,38 @@ export class BlogCommentRepository extends BasePostgresRepository<
     return this.createEntityFromDocument(document);
   }
 
-  public async find(postId: string): Promise<BlogCommentEntity[]> {
-    const documents = await this.client.comment.findMany({
-      take: MAX_COMMENT_LIMIT,
+  // public async find(postId: string): Promise<BlogCommentEntity[]> {
+  //   const documents = await this.client.comment.findMany({
+  //     take: MAX_COMMENT_LIMIT,
+  //     where: {
+  //       postId,
+  //     },
+  //   });
+
+  //   if (!documents.length) {
+  //       throw new NotFoundException(`Comments not found.`);
+  //   }
+
+  //   return documents.map((document) => this.createEntityFromDocument(document));
+  // }
+
+  public async findByPostId(postId: string): Promise<BlogCommentEntity[]> {
+    const records = await this.client.comment.findMany({
       where: {
         postId,
       },
+      take: MAX_COMMENT_LIMIT,
     });
 
-    if (!documents.length) {
-        throw new NotFoundException(`Comments not found.`);
-    }
+    return records.map((record) => this.createEntityFromDocument(record));
+  }  
 
-    return documents.map((document) => this.createEntityFromDocument(document));
-  }
-
-  public async deleteById(id: string): Promise<void> {
-    await this.client.comment.delete({
-      where: {
-        id,
-      },
-    });
-  }
-
-  public async update(entity: BlogCommentEntity): Promise<void> {
-    await this.client.comment.update({
-      where: { id: entity.id },
-      data: {
-        text: entity.text,
-      },
-    });
-  }
+  // public async update(entity: BlogCommentEntity): Promise<void> {
+  //   await this.client.comment.update({
+  //     where: { id: entity.id },
+  //     data: {
+  //       text: entity.text,
+  //     },
+  //   });
+  // }
 }

@@ -12,14 +12,15 @@ export class BlogCommentService {
     return this.blogCommentRepository.findById(id);
   }
 
-  public async getAllComments(id: string): Promise<BlogCommentEntity[]> {
-    return await this.blogCommentRepository.find(id);
+  public async getComments(postId: string): Promise<BlogCommentEntity[]> {
+    return await this.blogCommentRepository.findByPostId(postId);
   }
 
   public async createComment(
+    postId: string,
     dto: CreateCommentDto
   ): Promise<BlogCommentEntity> {
-    const newComment = new BlogCommentEntity(dto);
+    const newComment = new BlogCommentEntity({ ...dto, postId });
     await this.blogCommentRepository.save(newComment);
 
     return newComment;

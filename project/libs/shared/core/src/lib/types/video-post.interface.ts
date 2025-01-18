@@ -1,8 +1,7 @@
 import { Post } from './post.interface';
+import { BlogContents } from './blog-contents';
+import { PostTypes } from './post-types';
 
 export interface VideoPost extends Post {
-  content: {
-    title: string;
-    url: string;
-  };
+  content: BlogContents[typeof PostTypes.Video];
 }
