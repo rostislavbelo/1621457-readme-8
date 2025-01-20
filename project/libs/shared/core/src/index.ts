@@ -14,3 +14,5 @@ export { BlogContents } from './lib/types/blog-contents';
 export { PaginationResult } from './lib/types/pagination.interface';
 export { SortDirection } from './lib/types/sort-direction.enum';
 export { PostTypes } from './lib/types/post-types';
+export { Token } from './lib/interfaces/token.interface';
+export { TokenPayload } from './lib/interfaces/token-payload.interface';
