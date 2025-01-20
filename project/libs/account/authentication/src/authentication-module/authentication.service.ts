@@ -1,40 +1,45 @@
-import { Injectable, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { BlogUserRepository, BlogUserEntity } from '@project/blog-user';
+import {
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+    HttpException,
+  HttpStatus,
+  Injectable,
+  Logger
+} from '@nestjs/common';
+import { BlogUserEntity, BlogUserRepository } from '@project/blog-user';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { AuthenticationMessage } from './authentication.constant';
-import dayjs from 'dayjs';
+import { AuthMessages } from './authentication.constant';
 import { LoginUserDto } from '../dto/login-user.dto';
-import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { Token, TokenPayload, User } from '@project/shared/core';
 
 @Injectable()
 export class AuthenticationService {
+  private readonly logger = new Logger(AuthenticationService.name);
+
   constructor(
     private readonly blogUserRepository: BlogUserRepository,
-    private readonly configService: ConfigService,
-  ) {
-    // Извлекаем настройки из конфигурации
-    console.log(configService.get<string>('db.host'));
-    console.log(configService.get<string>('db.user'));
-    console.log(configService.get<string>('db.port'));
-    console.log(configService.get<string>('db[port]'));
-    console.log(configService.get<string>('db'));
-  }
-    public async register(dto: CreateUserDto): Promise<BlogUserEntity> {
-    
-    const {email, name, password} = dto;
+    private readonly jwtService: JwtService
+  ) {}
+
+  public async register(dto: CreateUserDto) {
+    const { email, name, avatar, password } = dto;
 
     const blogUser = {
-      email, name, avatarId: '', registrationDate: dayjs(new Date()).toDate(),
+      email,
+      name,
+      avatar,
       passwordHash: ''
     };
 
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (existUser) {
-      throw new ConflictException(AuthenticationMessage.Auth_User_Exits);
+      throw new ConflictException(AuthMessages.UserExists);
     }
 
-    const userEntity = await new BlogUserEntity(blogUser).setPassword(password)
+    const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
 
     this.blogUserRepository.save(userEntity);
 
@@ -42,15 +47,15 @@ export class AuthenticationService {
   }
 
   public async verifyUser(dto: LoginUserDto) {
-    const {email, password} = dto;
+    const { email, password } = dto;
     const existUser = await this.blogUserRepository.findByEmail(email);
 
     if (!existUser) {
-      throw new NotFoundException(AuthenticationMessage.Auth_User_Not_Found);
+      throw new UnauthorizedException(AuthMessages.LoginFailed);
     }
 
-    if (!await existUser.comparePassword(password)) {
-      throw new UnauthorizedException(AuthenticationMessage.Auth_User_Password_Wrong);
+    if (!(await existUser.comparePassword(password))) {
+      throw new UnauthorizedException(AuthMessages.LoginFailed);
     }
 
     return existUser;
@@ -60,9 +65,28 @@ export class AuthenticationService {
     const user = await this.blogUserRepository.findById(id);
 
     if (!user) {
-      throw new NotFoundException(AuthenticationMessage.Auth_User_Not_Found);
+      throw new NotFoundException(AuthMessages.UserNotFound);
     }
 
     return user;
+  }
+
+  public async createUserToken(user: User): Promise<Token> {
+    const payload: TokenPayload = {
+      sub: user.id,
+      email: user.email,
+      name: user.name,
+    };
+
+    try {
+      const accessToken = await this.jwtService.signAsync(payload);
+      return { accessToken };
+    } catch (error) {
+      this.logger.error('[Token generation error]: ' + error.message);
+      throw new HttpException(
+        'Ошибка при создании токена.',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 }
