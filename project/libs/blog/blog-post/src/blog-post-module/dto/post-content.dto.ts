@@ -1,3 +1,5 @@
+import { PostTypes } from '@project/shared/core';
+
 import {
     IsOptional,
     IsString,
@@ -10,7 +12,9 @@ import {
   const YOUTUBE_REGEXP =
     /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/gi;
   
-  export class PostContent {}
+    export class PostContent {
+      __type: (typeof PostTypes)[keyof typeof PostTypes];
+    }
   
   export class LinkContentDto extends PostContent {
     @IsUrl()
