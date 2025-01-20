@@ -9,10 +9,10 @@ import {
     Patch,
     Post,
     Query,
+    UseInterceptors
   } from '@nestjs/common';
-  
-  import { fillDto } from '@project/helpers';
-  
+  import { PostContentRequestTransform } from './interceptors/post-content-request-transform.interceptor';
+  import { fillDto } from '@project/helpers';  
   import { BlogPostService } from './blog-post.service';
   import { BlogPostRdo } from './rdo/blog-post.rdo';
   import { BlogPostQuery } from './blog-post.query';
@@ -46,6 +46,7 @@ import {
     }
   
     @Post('/')
+    @UseInterceptors(PostContentRequestTransform)
     public async create(@Body() dto: CreatePostDto) {
       const newPost = await this.blogPostService.createPost(dto);
       // return fillDto(BlogPostRdo, newPost.toPOJO());
@@ -59,6 +60,7 @@ import {
     }
   
     @Patch('/:id')
+    @UseInterceptors(PostContentRequestTransform)
     public async update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
       const updatedPost = await this.blogPostService.updatePost(id, dto);
       return fillDto(BlogPostRdo, updatedPost.toPOJO());
