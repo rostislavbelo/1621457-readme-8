@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/ра98ат98ра98ра8нра9809ра0 HTTP/1.1
+GET http://localhost:3000/api/auth/676097e1f1de7f4bac72a181 HTTP/1.1
 
 ###
 
@@ -27,7 +27,7 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/jfut0e7w-ejs6anct-t7d6-1065-gy7y-fj7enzt6ei82 HTTP/1.1
-Authorization: Bearer mfu7tjdysrtdbncyfllJDY7HR8jfuddmfutasydifmystttajmhfyfufifFHLF00jfjflfklkfufhjYYR
+GET http://localhost:3000/api/auth/676097e1f1de7f4bac72a181 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJlbWFpbCI6IjY2aWx1c2VyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6IjY2S2Vrc29uZ28iLCJpYXQiOjE3MzczOTg0ODQsImV4cCI6MTczNzM5ODc4NH0.7VdyzopDe6j98QVgK1gDO0ICJbskUsLYtN_bt-Rti2o
 
 ###

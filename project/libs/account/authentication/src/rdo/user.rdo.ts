@@ -10,11 +10,12 @@ export class UserRdo {
   public id: string;
 
   @ApiProperty({
-    description: 'User avatar id',
-    example: 'any random text'
+    description: 'User avatar path',
+    example: '/images/userimg.png',
+    required: false,
   })
   @Expose()
-  public avatarId: string;
+  public avatar: string;
 
   @ApiProperty({
     description: 'User email',

@@ -5,14 +5,14 @@ GET http://localhost:3000/api/posts HTTP/1.1
 
 # Get posts with filter
 
-# GET http://localhost:3000/api/posts?limit=2&sortDirection=desc&categories[]=39614113-7ad5-45b6-8093-06455437e1e2&page=1 HTTP/1.1
+# GET http://localhost:3000/api/posts?limit=2&sortDirection=desc&categories[]=6d308040-96a2-4162-bea6-2338e9976540&page=1 HTTP/1.1
 
 GET http://localhost:3000/api/posts?limit=2&sortDirection=desc&page=1 HTTP/1.1
 
 ###
 
 # Get post by id
-GET http://localhost:3000/api/posts/4cb8439f-f56a-4ac3-ba51-4018561d3f88 HTTP/1.1
+GET http://localhost:3000/api/posts/6d308040-96a2-4162-bea6-2338e9976540 HTTP/1.1
 
 ###
 
@@ -59,7 +59,7 @@ POST http://localhost:3000/api/posts/ab04593b-da99-4fe3-8b4b-e06d82e2efdd/commen
 Content-Type: application/json
 
 {
-  "message": "This is text",
+  "message": "This is text This is text This is text ",
   "userId": "65990102bb965b742900ba59"
 }
 
