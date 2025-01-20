@@ -1,1 +1,1 @@
-export * from './lib/pipes';
+export * from './lib/mongo-id-validation.pipe';
