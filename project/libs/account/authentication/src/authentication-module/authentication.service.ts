@@ -2,7 +2,7 @@ import {
   ConflictException,
   NotFoundException,
   UnauthorizedException,
-    HttpException,
+  HttpException,
   HttpStatus,
   Injectable,
   Logger
