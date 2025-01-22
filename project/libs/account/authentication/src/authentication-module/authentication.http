@@ -11,7 +11,7 @@ Content-Type: application/json
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/7aef6925-4fe5-4057-b5cc-cc7cf214df05 HTTP/1.1
+GET http://localhost:3000/api/auth/676097e1f1de7f4bac72a181 HTTP/1.1
 
 ###
 
@@ -23,5 +23,11 @@ Content-Type: application/json
   "email": "user@notfound.local",
   "password": "123456"
 }
+
+###
+
+# Get user by ID
+GET http://localhost:3000/api/auth/676097e1f1de7f4bac72a181 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJlbWFpbCI6IjY2aWx1c2VyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6IjY2S2Vrc29uZ28iLCJpYXQiOjE3MzczOTg0ODQsImV4cCI6MTczNzM5ODc4NH0.7VdyzopDe6j98QVgK1gDO0ICJbskUsLYtN_bt-Rti2o
 
 ###
