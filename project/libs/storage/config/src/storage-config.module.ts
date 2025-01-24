@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import storageConfig from './storage.config';
+import storageConfig from '../../file-uploader/src/storage.config';
 
 const ENV_FILE_PATH = 'apps/storage/storage.env';
 
