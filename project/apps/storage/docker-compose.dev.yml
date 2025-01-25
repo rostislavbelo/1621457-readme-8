@@ -1,5 +1,5 @@
 services:
-  readme-8.storage.mongo:
+  readme.storage.mongo:
     image: mongo:4.4
     restart: always
     container_name: readme.storage.mongo
