@@ -16,3 +16,5 @@ export { SortDirection } from './lib/types/sort-direction.enum';
 export { PostTypes } from './lib/types/post-types';
 export { Token } from './lib/interfaces/token.interface';
 export { TokenPayload } from './lib/interfaces/token-payload.interface';
+export { File } from './lib/types/file.interface';
+export { StoredFile } from './lib/types/stored-file.interface';

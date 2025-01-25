@@ -2,7 +2,7 @@ services:
   readme-8.storage.mongo:
     image: mongo:4.4
     restart: always
-    container_name: readme-8.storage.mongo
+    container_name: readme.storage.mongo
 
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
@@ -14,6 +14,12 @@ services:
 
     volumes:
       - readme-8.mongo.storage:/data/db
+
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb://${MONGO_USER}:${MONGO_PASSWORD}@localhost:${MONGO_PORT}/?authSource=${MONGO_DB} --quiet
+      interval: 30s
+      timeout: 10s
+      retries: 5    
 
   readme-8.storage.mongo.ui:
     image: mongo-express:1.0-20
