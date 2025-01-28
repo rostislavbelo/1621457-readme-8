@@ -1,0 +1,10 @@
+From: Igor Antonov <a@iantonov.me>
+To: Keks <keks@htmlacademy.local>
+Subject: Hello Keks
+Date: Mon, 12 Dec 2022 08:00:00
+Content-Type: text/html; charset=utf8
+
+<html>
+<body>
+Hello, Keks!
+</body>
