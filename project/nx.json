@@ -39,7 +39,7 @@
         "apps/account-e2e/**/*",
         "apps/api-e2e/**/*",
         "apps/blog-e2e/**/*",
-        "apps/file-vault-e2e/**/*",
+        "apps/storage-e2e/**/*",
         "apps/notify-e2e/**/*"
       ]
     }
