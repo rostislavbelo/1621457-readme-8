@@ -3,16 +3,16 @@ POST http://localhost:3000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user999@notfound.local",
-  "name": "user999",
+  "email": "user9990@notfound.local",
+  "name": "user9990",
   "password": "123456",
-  "avatar": "https://yandex.ru/search/999.png"
+  "avatar": "https://yandex.ru/search/9990.png"
 }
 
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/6798a94343875297f7734c00 HTTP/1.1
+GET http://localhost:3000/api/auth/678eab3f481e701b6542f03d HTTP/1.1
 
 ###
 
