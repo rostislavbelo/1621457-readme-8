@@ -1,7 +1,6 @@
 import { Controller, Body, Post, Get, Param, HttpStatus, UseGuards, HttpCode, Req} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from '../dto/create-user.dto';
-// import { LoginUserDto } from '../dto/login-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggedUserRdo } from '../rdo/logged-user.rdo';
 import { UserRdo } from '../rdo/user.rdo';
@@ -13,6 +12,7 @@ import { NotificationsService } from '@project/notifications';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { RequestWithUser } from './request-with-user.interface';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
+import { RequestWithTokenPayload } from './request-with-token-payload.interface';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -65,7 +65,6 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
-  //гард ниже под вопросом, нужен ли...
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
@@ -82,5 +81,11 @@ export class AuthenticationController {
   @Post('refresh')
   public async refreshToken(@Req() { user }: RequestWithUser) {
     return this.authService.createUserToken(user);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+    return payload;
   }
 }
