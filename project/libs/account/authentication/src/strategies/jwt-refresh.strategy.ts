@@ -2,10 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigType } from '@nestjs/config';
-
 import { jwtConfig } from '@project/account-config';
 import { RefreshTokenPayload } from '@project/shared/core';
-
 import { AuthenticationService } from '../authentication-module/authentication.service';
 import { RefreshTokenService } from '../refresh-token-module/refresh-token.service';
 import { TokenNotExistsException } from '../exceptions/token-not-exists.exception';
@@ -32,7 +30,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
 
     await this.refreshTokenService.deleteRefreshSession(payload.tokenId);
     await this.refreshTokenService.deleteExpiredRefreshTokens();
-
     return this.authService.getUserByEmail(payload.email);
   }
 }
