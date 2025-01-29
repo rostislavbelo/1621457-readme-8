@@ -1,7 +1,7 @@
 import { Controller, Body, Post, Get, Param, HttpStatus, UseGuards, HttpCode, Req} from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { LoginUserDto } from '../dto/login-user.dto';
+// import { LoginUserDto } from '../dto/login-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoggedUserRdo } from '../rdo/logged-user.rdo';
 import { UserRdo } from '../rdo/user.rdo';
@@ -65,6 +65,7 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
+  //гард ниже под вопросом, нужен ли...
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {

@@ -1,34 +1,40 @@
 # Create a new user
-POST http://localhost:3000/api/auth/register HTTP/1.1
+POST http://localhost:3001/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user9990@notfound.local",
-  "name": "user9990",
+  "email": "user111@notfound.local",
+  "name": "user111",
   "password": "123456",
-  "avatar": "https://yandex.ru/search/9990.png"
+  "avatar": "https://yandex.ru/search/111.png"
 }
 
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/678eab3f481e701b6542f03d HTTP/1.1
+GET http://localhost:3001/api/auth/679a2bd04f1c1b4fee166d2f HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzlhMmJkMDRmMWMxYjRmZWUxNjZkMmYiLCJlbWFpbCI6InVzZXIxMTFAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoidXNlcjExMSIsImlhdCI6MTczODE2MjM2MCwiZXhwIjoxNzM4MTYzMjYwfQ.BVf0fN3VVY_oJExsqrm-r1iQ_-VzDmLiu76VzAIxxWA
 
 ###
 
 # Login user by email and password
-POST http://localhost:3000/api/auth/login HTTP/1.1
+POST http://localhost:3001/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "user@notfound.local",
+  "email": "user111@notfound.local",
   "password": "123456"
 }
 
 ###
 
-# Get user by ID
-GET http://localhost:3000/api/auth/676097e1f1de7f4bac72a181 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIiLCJlbWFpbCI6IjY2aWx1c2VyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6IjY2S2Vrc29uZ28iLCJpYXQiOjE3MzczOTg0ODQsImV4cCI6MTczNzM5ODc4NH0.7VdyzopDe6j98QVgK1gDO0ICJbskUsLYtN_bt-Rti2o
+# Get new JWT pair
+POST http://localhost:3001/api/auth/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzlhMmJkMDRmMWMxYjRmZWUxNjZkMmYiLCJlbWFpbCI6InVzZXIxMTFAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoidXNlcjExMSIsImlhdCI6MTczODE2MjM2MCwiZXhwIjoxNzM4MTYzMjYwfQ.BVf0fN3VVY_oJExsqrm-r1iQ_-VzDmLiu76VzAIxxWA
+###
+
+# Check user token
+POST http://localhost:3001/api/auth/check HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzlhMmJkMDRmMWMxYjRmZWUxNjZkMmYiLCJlbWFpbCI6InVzZXIxMTFAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoidXNlcjExMSIsImlhdCI6MTczODE2MjM2MCwiZXhwIjoxNzM4MTYzMjYwfQ.BVf0fN3VVY_oJExsqrm-r1iQ_-VzDmLiu76VzAIxxWA
 
 ###
