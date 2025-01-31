@@ -1,12 +1,14 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Post, Req, UseFilters, HttpStatus, FileTypeValidator,  MaxFileSizeValidator, ParseFilePipe, UploadedFile, UseInterceptors} from '@nestjs/common';
-import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo } from '@project/authentication';
+import { Body, Controller, Post, Req, UseFilters, HttpStatus, FileTypeValidator,  MaxFileSizeValidator, ParseFilePipe, UploadedFile, UseInterceptors, UseGuards} from '@nestjs/common';
+import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo, ChangePasswordDto } from '@project/authentication';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { ApiResponse, ApiTags, ApiConsumes } from '@nestjs/swagger';
 import 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserRegisterDto } from './dto/user-register.dto';
+import { CheckAuthGuard } from './guards/check-auth.guard';
+
 
 
 @ApiTags('users')
@@ -84,6 +86,38 @@ export class UsersController {
       `${ApplicationServiceURL.Users}/login`,
       loginUserDto
     );
+    return data;
+  }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.CREATED,
+    description: AuthenticationResponseMessage.PasswordChanged,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.PasswordChangeUnauthorized,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: AuthenticationResponseMessage.ServerError,
+  })
+  @UseGuards(CheckAuthGuard)
+  @Post('password')
+  public async changePassword(
+    @Body() dto: ChangePasswordDto,
+    @Req() req: Request
+  ) {
+    const { data } = await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Users}/password`,
+      dto,
+      {
+        headers: {
+          Authorization: req.headers['authorization'],
+        },
+      }
+    );
+
     return data;
   }
 

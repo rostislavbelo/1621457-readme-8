@@ -13,7 +13,7 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { RequestWithUser } from './request-with-user.interface';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { RequestWithTokenPayload } from './request-with-token-payload.interface';
-import { ChangePassword } from '../dto/change-password.dto';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -42,18 +42,26 @@ export class AuthenticationController {
     const { email, name } = newUser;
     await this.notificationsService.registerSubscriber({ email, name });
 
-    return newUser.toPOJO();
+    return fillDto(UserRdo, newUser.toPOJO());
   }
 
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.CREATED,
-    description: AuthenticationResponseMessage.UserCreated,
+    description: AuthenticationResponseMessage.PasswordChanged,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.PasswordChangeUnauthorized,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: AuthenticationResponseMessage.ServerError
   })
   @UseGuards(JwtAuthGuard)
   @Post('password')
   public async changePassword(
-    @Body() dto: ChangePassword,
+    @Body() dto: ChangePasswordDto,
     @Req() { user: payload }: RequestWithTokenPayload
   ) {
     const updatedUser = await this.authService.changePassword(payload.sub, dto);
