@@ -18,6 +18,7 @@ import { Token, User } from '@project/shared/core';
 import { jwtConfig } from '@project/account-config';
 import { RefreshTokenService } from '../refresh-token-module/refresh-token.service';
 import { createJWTPayload } from '@project/helpers';
+import { ChangePassword } from '../dto/change-password.dto';
 
 
 @Injectable()
@@ -53,6 +54,25 @@ export class AuthenticationService {
     await this.blogUserRepository.save(userEntity);
 
     return userEntity;
+  }
+
+  public async changePassword(id: string, dto: ChangePassword) {
+    const { oldPassword, newPassword } = dto;
+    const existUser = await this.blogUserRepository.findById(id);
+
+    if (!existUser) {
+      throw new UnauthorizedException(AuthMessages.UserNotFound);
+    }
+
+    if (!(await existUser.comparePassword(oldPassword))) {
+      throw new UnauthorizedException(AuthMessages.OldPasswordWrong);
+    }
+
+    await existUser.setPassword(newPassword);
+
+    await this.blogUserRepository.update(existUser);
+
+    return existUser;
   }
 
   public async verifyUser(dto: LoginUserDto) {

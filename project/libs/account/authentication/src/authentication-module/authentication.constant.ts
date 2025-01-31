@@ -1,13 +1,8 @@
-// export const AuthenticationMessage = {
-//   Auth_User_Exits: 'User with this email exists',
-//   Auth_User_Not_Found: 'User not found',
-//   Auth_User_Password_Wrong: 'User password is wrong',
-// } as const;
-
 export enum AuthMessages {
   UserExists = 'User with this email exists',
   LoginFailed = 'Wrong password or email',
   UserNotFound = 'User not found',
+  OldPasswordWrong = 'Password is wrong.'
 }
 
 export const AuthenticationResponseMessage = {
@@ -17,6 +12,7 @@ export const AuthenticationResponseMessage = {
     UserNotFound: 'User not found',
     UserExist: 'User with the email already exists',
     UserCreated: 'The new user has been successfully created.',
+    ServerError: 'Internal server error'
   } as const;
 
 export const AuthenticationValidateMessage = {

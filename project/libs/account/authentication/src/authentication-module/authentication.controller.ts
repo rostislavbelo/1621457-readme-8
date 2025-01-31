@@ -13,6 +13,7 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { RequestWithUser } from './request-with-user.interface';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { RequestWithTokenPayload } from './request-with-token-payload.interface';
+import { ChangePassword } from '../dto/change-password.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -23,12 +24,17 @@ export class AuthenticationController {
   ) {}
 
   @ApiResponse({
+    type: UserRdo,
     status: HttpStatus.CREATED,
     description: AuthenticationResponseMessage.UserCreated,
   })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
     description: AuthenticationResponseMessage.UserExist,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: AuthenticationResponseMessage.ServerError,
   })
   @Post('register')
   public async create(@Body() dto: CreateUserDto) {
@@ -37,6 +43,22 @@ export class AuthenticationController {
     await this.notificationsService.registerSubscriber({ email, name });
 
     return newUser.toPOJO();
+  }
+
+  @ApiResponse({
+    type: UserRdo,
+    status: HttpStatus.CREATED,
+    description: AuthenticationResponseMessage.UserCreated,
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post('password')
+  public async changePassword(
+    @Body() dto: ChangePassword,
+    @Req() { user: payload }: RequestWithTokenPayload
+  ) {
+    const updatedUser = await this.authService.changePassword(payload.sub, dto);
+
+    return fillDto(UserRdo, updatedUser.toPOJO());
   }
 
   @ApiResponse({
@@ -65,11 +87,11 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
-    return existUser.toPOJO();
+    return fillDto(UserRdo, existUser.toPOJO());
   }
 
   @ApiResponse({
