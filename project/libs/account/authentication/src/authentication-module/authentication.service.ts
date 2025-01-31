@@ -137,4 +137,38 @@ export class AuthenticationService {
 
     return existUser;
   }
+
+  
+  public async toggleSubscription(subscriberId, subscribedToId) {
+    const subscriber = await this.blogUserRepository.findById(subscriberId);
+
+    if (!subscriber) {
+      throw new NotFoundException(
+        `Current user (subscriber) with id ${subscriberId} not found`
+      );
+    }
+
+    const subscribedTo = await this.blogUserRepository.findById(subscribedToId);
+
+    if (!subscribedTo) {
+      throw new NotFoundException(`User with id ${subscribedToId} not found`);
+    }
+
+    if (subscriber.subscriptions.includes(subscribedToId)) {
+      subscriber.subscriptions = subscriber.subscriptions.filter(
+        (id) => id !== subscribedToId
+      );
+      subscribedTo.subscribersCount -= 1;
+    } else {
+      subscriber.subscriptions.push(subscribedToId);
+      subscribedTo.subscribersCount += 1;
+    }
+
+    await Promise.all([
+      this.blogUserRepository.update(subscriber),
+      this.blogUserRepository.update(subscribedTo),
+    ]);
+
+    return subscriber;
+  }
 }

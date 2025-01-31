@@ -89,13 +89,17 @@ export class AuthenticationController {
   }
 
   @ApiResponse({
-    type: UserRdo,
+    type: UserDetailsRdo,
     status: HttpStatus.OK,
     description: AuthenticationResponseMessage.UserFound,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.JwtAuthFailed,
   })
   @UseGuards(JwtAuthGuard)
   @Get(':id')
@@ -120,9 +124,40 @@ export class AuthenticationController {
     return this.authService.createUserToken(user);
   }
 
+  @ApiResponse({
+    type: TokenPairRdo,
+    status: HttpStatus.OK,
+    description: AuthenticationResponseMessage.UserFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.JwtAuthFailed,
+  })
   @UseGuards(JwtAuthGuard)
   @Post('check')
   public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
     return payload;
+  }
+
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: AuthenticationResponseMessage.SubsciptionSucess,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: AuthenticationResponseMessage.UserNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.JwtAuthFailed,
+  })
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('toggle-subscribe/:id')
+  public async toggleSubscribe(
+    @Param('id', MongoIdValidationPipe) id: string,
+    @Req() { user }: RequestWithTokenPayload
+  ) {
+    await this.authService.toggleSubscription(user.sub, id);
   }
 }
