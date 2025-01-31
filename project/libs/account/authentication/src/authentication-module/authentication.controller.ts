@@ -14,6 +14,7 @@ import { RequestWithUser } from './request-with-user.interface';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { RequestWithTokenPayload } from './request-with-token-payload.interface';
 import { ChangePasswordDto } from '../dto/change-password.dto';
+import { TokenPairRdo } from '../refresh-token-module/token-pair.rdo';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -95,7 +96,7 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
-  //@UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
@@ -103,8 +104,13 @@ export class AuthenticationController {
   }
 
   @ApiResponse({
+    type: TokenPairRdo,
     status: HttpStatus.OK,
-    description: 'Get a new access/refresh tokens',
+    description: AuthenticationResponseMessage.RefreshSuccess,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.RefreshFailure,
   })
   @UseGuards(JwtRefreshGuard)
   @HttpCode(HttpStatus.OK)

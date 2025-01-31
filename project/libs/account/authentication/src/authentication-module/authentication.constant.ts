@@ -15,6 +15,8 @@ export const AuthenticationResponseMessage = {
     ServerError: 'Internal server error',
     PasswordChanged: 'Password was successfully changed.',
     PasswordChangeUnauthorized: 'Authentication failed or old password is wrong.',
+    RefreshSuccess: 'Get a new access/refresh tokens',
+    RefreshFailure: 'Wrong refresh token'
   } as const;
 
 export const AuthenticationValidateMessage = {

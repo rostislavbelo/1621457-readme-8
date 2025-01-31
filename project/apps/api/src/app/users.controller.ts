@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Body, Controller, Post, Req, UseFilters, HttpStatus, FileTypeValidator,  MaxFileSizeValidator, ParseFilePipe, UploadedFile, UseInterceptors, UseGuards} from '@nestjs/common';
-import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo, ChangePasswordDto } from '@project/authentication';
+import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo, ChangePasswordDto, TokenPairRdo } from '@project/authentication';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { ApiResponse, ApiTags, ApiConsumes } from '@nestjs/swagger';
@@ -121,6 +121,15 @@ export class UsersController {
     return data;
   }
 
+  @ApiResponse({
+    type: TokenPairRdo,
+    status: HttpStatus.OK,
+    description: AuthenticationResponseMessage.RefreshSuccess,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.RefreshFailure,
+  })
   @Post('refresh')
   public async refreshToken(@Req() req: Request) {
     const { data } = await this.httpService.axiosRef.post(
