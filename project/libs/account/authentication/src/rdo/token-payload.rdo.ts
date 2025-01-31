@@ -4,7 +4,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class TokenPayloadRdo {
   @ApiProperty({
     description: 'The unique user ID',
-    example: 'ab1061c6425ea6329c3d6a04',
+    example: '6329c3d6a04ab1061c6425ea',
   })
   @Expose()
   sub: string;

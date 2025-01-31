@@ -1,34 +1,88 @@
-# Login user by email and password
-POST http://localhost:3000/api/users/login HTTP/1.1
+# Create a new user not avatar
+POST http://localhost:3000/api/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "355diluser@notfound.local",
+  "email": "user777@notfound.local",
+  "name": "Keks",
   "password": "123456"
 }
 
 ###
 
-# Get user by ID
-GET http://localhost:3001/api/auth/679a2bd04f1c1b4fee166d2f HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzhlYWIzZjQ4MWU3MDFiNjU0MmYwM2QiLCJlbWFpbCI6IjM1NWRpbHVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiMzY1ZEtla3NvbmdvIiwiaWF0IjoxNzM4MTg1NjUwLCJleHAiOjE3MzgxODY1NTB9.7cjQ14B1Z0AtbDALeJRVsgnudyTLhtqz4AhDBTx_p7s
+# Create a new user with avatar
+POST http://localhost:3000/api/users/register HTTP/1.1
+Content-Type: multipart/form-data; boundary=boundary
 
+--boundary
+Content-Disposition: form-data; name="email"
+
+user79avatar@notfound.local
+--boundary
+Content-Disposition: form-data; name="password"
+
+123456
+--boundary
+Content-Disposition: form-data; name="name"
+
+Keks
+--boundary
+Content-Disposition: form-data; name="avatar"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ./_temp/avatar.jpg
+--boundary--
+
+###
+
+# Login user by email and password
+POST http://localhost:3000/api/users/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "user79avatar@notfound.local",
+  "password": "123456"
+}
+
+###
+
+# Change password
+POST http://localhost:3000/api/users/password HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzhlYWIzZjQ4MWU3MDFiNjU0MmYwM2QiLCJlbWFpbCI6IjM1NWRpbHVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiMzY1ZEtla3NvbmdvIiwiaWF0IjoxNzM4MzM1NzczLCJleHAiOjE3MzgzMzY2NzN9.VuIvaqrGIVpr1bZ7KX3V9gSqHRsNuJ0Ev2p6WdW5Z48
+Content-Type: application/json
+
+{
+  "oldPassword": "123456",
+  "newPassword": "654321"
+}
+
+###
+
+# Get info user by ID
+GET http://localhost:3000/api/users/679cea9405df5904af4fcfc9 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzljZWE5NDA1ZGY1OTA0YWY0ZmNmYzkiLCJlbWFpbCI6InVzZXI3N2F2YXRhckBub3Rmb3VuZC5sb2NhbCIsIm5hbWUiOiJLZWtzIiwiaWF0IjoxNzM4MzM3NDg2LCJleHAiOjE3MzgzMzgzODZ9.YDDQOu0Qd39r9Rnr4yxFQVv79CKK3LGr-iJ-icGMEE0
 ###
 
 # Get new JWT pair
 POST http://localhost:3000/api/users/refresh HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzhlYWIzZjQ4MWU3MDFiNjU0MmYwM2QiLCJlbWFpbCI6IjM1NWRpbHVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiMzY1ZEtla3NvbmdvIiwidG9rZW5JZCI6ImIyYTEwYjU3LWU5OTEtNDU5ZC04NTQzLTNkMzM5NWQ5ZjczZiIsImlhdCI6MTczODE4NTMwMywiZXhwIjoxNzQwNzc3MzAzfQ.bdoapCztau7BydlQXrZjGax_YHQmH_ZGkKub8ikgxRc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzlkNDA0Zjg5NjcxYTVlODNhOGY5ODYiLCJlbWFpbCI6InVzZXI3OWF2YXRhckBub3Rmb3VuZC5sb2NhbCIsIm5hbWUiOiJLZWtzIiwiaWF0IjoxNzM4MzYwNDY2LCJleHAiOjE3MzgzNjEzNjZ9.AffPZ_ZKvN3lg1jU0ftef5d4tmYLxYZvP-Al26CZqkY
+
+###
+
+# Add subcript
+POST http://localhost:3000/api/users/toggle-subscribe/678f6261efc305c331d442f0 HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzlkNDA0Zjg5NjcxYTVlODNhOGY5ODYiLCJlbWFpbCI6InVzZXI3OWF2YXRhckBub3Rmb3VuZC5sb2NhbCIsIm5hbWUiOiJLZWtzIiwiaWF0IjoxNzM4MzYwNDY2LCJleHAiOjE3MzgzNjEzNjZ9.AffPZ_ZKvN3lg1jU0ftef5d4tmYLxYZvP-Al26CZqkY
 
 ###
 
 # Create a new post
 POST http://localhost:3000/api/blog HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzhlYWIzZjQ4MWU3MDFiNjU0MmYwM2QiLCJlbWFpbCI6IjM1NWRpbHVzZXJAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiMzY1ZEtla3NvbmdvIiwiaWF0IjoxNzM4MTg2MTg4LCJleHAiOjE3MzgxODcwODh9.LtR1rKXwtKiD7DektOsqUwBw7yA9C6bZQkIYbf5rAUo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzljZjNmOTA1ZGY1OTA0YWY0ZmNmZmMiLCJlbWFpbCI6InVzZXI3YXZhdGFyQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3MzgzNTc2NjQsImV4cCI6MTczODM1ODU2NH0.zc6BJtgFCTC1IY_WOfBix6Vp_fLeHLUqC6_0t7UgefM
 Content-Type: application/json
 
 {
   "type": "TEXT",
-  //"authorId": "678eab3f481e701b6542f03d",
   "tags": ["cats", "new"],
   "content": {
     "title": "Тест api-getway публикация Новая публикация-1",

@@ -17,6 +17,7 @@ import { ChangePasswordDto } from '../dto/change-password.dto';
 import { TokenPairRdo } from '../refresh-token-module/token-pair.rdo';
 import { UserDetailsRdo } from '../rdo/user-details.rdo';
 
+
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthenticationController {
@@ -152,7 +153,7 @@ export class AuthenticationController {
     description: AuthenticationResponseMessage.JwtAuthFailed,
   })
   @UseGuards(JwtAuthGuard)
-  @HttpCode(HttpStatus.NO_CONTENT)
+  //@HttpCode(HttpStatus.NO_CONTENT)
   @Post('toggle-subscribe/:id')
   public async toggleSubscribe(
     @Param('id', MongoIdValidationPipe) id: string,

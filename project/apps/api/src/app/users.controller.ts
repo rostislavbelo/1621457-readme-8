@@ -168,7 +168,6 @@ export class UsersController {
     return data;
   }
 
-
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: AuthenticationResponseMessage.SubsciptionSucess,
