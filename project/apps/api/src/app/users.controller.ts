@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Post, Req, UseFilters, HttpStatus, FileTypeValidator,  MaxFileSizeValidator, ParseFilePipe, UploadedFile, UseInterceptors, UseGuards} from '@nestjs/common';
-import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo, ChangePasswordDto, TokenPairRdo } from '@project/authentication';
+import { Body, Controller, Post, Req, UseFilters, HttpStatus, FileTypeValidator,  MaxFileSizeValidator, ParseFilePipe, UploadedFile, UseInterceptors, UseGuards, Param, Get} from '@nestjs/common';
+import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo, ChangePasswordDto, TokenPairRdo, UserDetailsRdo } from '@project/authentication';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { ApiResponse, ApiTags, ApiConsumes } from '@nestjs/swagger';
@@ -135,6 +135,29 @@ export class UsersController {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Users}/refresh`,
       null,
+      {
+        headers: {
+          Authorization: req.headers['authorization'],
+        },
+      }
+    );
+
+    return data;
+  }
+
+  @ApiResponse({
+    type: UserDetailsRdo,
+    status: HttpStatus.OK,
+    description: AuthenticationResponseMessage.UserFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: AuthenticationResponseMessage.UserNotFound,
+  })
+  @Get(':id')
+  public async getUserDetails(@Param('id') id: string, @Req() req: Request) {
+    const { data } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Users}/${id}`,
       {
         headers: {
           Authorization: req.headers['authorization'],

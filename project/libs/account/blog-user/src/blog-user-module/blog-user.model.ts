@@ -2,7 +2,6 @@ import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { AuthUser} from '@project/shared/core';
 
-//Модель документа для Монго, обрисовывает сущьность для БД
 @Schema({
   collection: 'accounts',
   timestamps: true,
@@ -12,7 +11,6 @@ export class BlogUserModel extends Document implements AuthUser {
   public avatar: string;
 
   @Prop({
-    //валидация
     required: true,
     unique: true,
   })
@@ -28,10 +26,14 @@ export class BlogUserModel extends Document implements AuthUser {
   })
   public passwordHash: string;
 
-  // @Prop({
-  //   required: true,
-  // })
-  // public registrationDate: Date;
+  @Prop({ required: true, default: 0 })
+  subscribersCount: number;
+
+  @Prop({ required: true, default: 0 })
+  postsCount: number;
+
+  @Prop({ required: true, default: [] })
+  subscriptions: string[];
 }
 
 export const BlogUserSchema = SchemaFactory.createForClass(BlogUserModel);

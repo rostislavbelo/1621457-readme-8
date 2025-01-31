@@ -6,3 +6,4 @@ export { LoggedUserRdo } from './rdo/logged-user.rdo';
 export { UserRdo } from './rdo/user.rdo';
 export { ChangePasswordDto } from './dto/change-password.dto';
 export { TokenPairRdo } from './refresh-token-module/token-pair.rdo';
+export { UserDetailsRdo } from './rdo/user-details.rdo';

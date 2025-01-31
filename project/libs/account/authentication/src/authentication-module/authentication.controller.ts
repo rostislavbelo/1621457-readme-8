@@ -15,6 +15,7 @@ import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { RequestWithTokenPayload } from './request-with-token-payload.interface';
 import { ChangePasswordDto } from '../dto/change-password.dto';
 import { TokenPairRdo } from '../refresh-token-module/token-pair.rdo';
+import { UserDetailsRdo } from '../rdo/user-details.rdo';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -100,7 +101,7 @@ export class AuthenticationController {
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
-    return fillDto(UserRdo, existUser.toPOJO());
+    return fillDto(UserDetailsRdo, existUser.toPOJO());
   }
 
   @ApiResponse({
