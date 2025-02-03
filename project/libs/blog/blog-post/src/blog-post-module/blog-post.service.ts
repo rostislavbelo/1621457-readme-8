@@ -6,10 +6,14 @@ import { BlogPostEntity } from './blog-post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { BlogPostFactory } from './blog-post.factory';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { BlogCommentService, CreateCommentDto } from '@project/blog-comment';
 
 @Injectable()
 export class BlogPostService {
-  constructor(private readonly blogPostRepository: BlogPostRepository) {}
+  constructor(
+    private readonly blogPostRepository: BlogPostRepository,
+    private readonly blogCommentService: BlogCommentService
+  ) {}
 
   public async getPosts(
     query?: BlogPostQuery
@@ -110,5 +114,14 @@ export class BlogPostService {
     delete existsPost.likesCount;
     await this.blogPostRepository.save(existsPost);
     return existsPost;
+  }
+
+  public async createComment(postId: string, dto: CreateCommentDto) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+    const newComment = await this.blogCommentService.createComment(postId, dto);
+    return newComment;
   }
 }

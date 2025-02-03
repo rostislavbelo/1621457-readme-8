@@ -41,6 +41,10 @@ import {
       status: HttpStatus.NOT_FOUND,
       description: BlogPostResponseMessages.PostNotFound,
     })
+    @ApiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      description: BlogPostResponseMessages.ServerError,
+    })
     @Get('/:id')
     public async show(@Param('id') id: string) {
       const post = await this.blogPostService.getPost(id);
@@ -154,6 +158,10 @@ import {
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
   })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
   @Post('addLike/:postId')
   @HttpCode(HttpStatus.NO_CONTENT)
   public async saveLike(
@@ -173,6 +181,10 @@ import {
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
   })
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('deleteLike/:postId')
@@ -196,6 +208,10 @@ import {
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
   })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
   @Post('repost/:postId')
   public async repost(
     @Param('postId') postId: string,
@@ -205,12 +221,29 @@ import {
     return fillDto(BlogPostRdo, newPost);
   }
 
+  @ApiResponse({
+    type: CommentRdo,
+    status: HttpStatus.CREATED,
+    description: BlogPostResponseMessages.CommentCreated,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
   @Post('/:postId/comments')
   public async createComment(
     @Param('postId') postId: string,
     @Body() dto: CreateCommentDto
   ) {
-    const newComment = await this.blogCommentService.createComment(postId, dto);
+    const newComment = await this.blogPostService.createComment(postId, dto);
     return fillDto(CommentRdo, newComment.toPOJO());
   }
 }

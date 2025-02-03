@@ -176,11 +176,12 @@ export class AuthenticationController {
     description: AuthenticationResponseMessage.JwtAuthFailed,
   })
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('incrementPostsCount/:id')
   public async incrementPostsCount(
     @Param('id', MongoIdValidationPipe) id: string
   ) {
-    this.authService.incrementPostsCount(id);
+    await this.authService.incrementPostsCount(id);
   }
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
@@ -195,10 +196,11 @@ export class AuthenticationController {
     description: AuthenticationResponseMessage.JwtAuthFailed,
   })
   @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('decrementPostsCount/:id')
   public async decrementPostsCount(
     @Param('id', MongoIdValidationPipe) id: string
   ) {
-    this.authService.decrementPostsCount(id);
+    await this.authService.decrementPostsCount(id);
   }
 }

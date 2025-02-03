@@ -19,4 +19,5 @@ export const BlogPostResponseMessages = {
   Forbidden: 'Access denied',
   PostUpdated: 'Post was updated',
   ValidationError: 'Validation error',
+  CommentCreated: 'Comment was created',
 } as const;

@@ -35,6 +35,8 @@ import {
   BlogPostWithPaginationRdo,
 } from '@project/blog-post';
 import { PostUpdateDto } from './dto/post-update.dto';
+import { CommentRdo } from '@project/blog-comment';
+import { CommentCreateDto } from './dto/comment-create.dto';
 
 @Controller('posts')
 @UseFilters(AxiosExceptionFilter)
@@ -99,7 +101,7 @@ export class BlogController {
     );
 
     await this.httpService.axiosRef.post(
-      `${ApplicationServiceURL.Users}/incrementPostsCount${dto['authorId']}`
+      `${ApplicationServiceURL.Users}/incrementPostsCount/${dto['authorId']}`
     );
     return data;
   }
@@ -111,6 +113,10 @@ export class BlogController {
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
   })
   @Get(':id')
   public async show(@Param('id') id: string) {
@@ -139,7 +145,6 @@ export class BlogController {
 
     return data;
   }
-
   
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
@@ -152,6 +157,10 @@ export class BlogController {
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
   })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectAuthorIdInterceptor)
@@ -174,6 +183,10 @@ export class BlogController {
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
   })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectAuthorIdInterceptor)
@@ -198,6 +211,10 @@ export class BlogController {
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
   })
   @UseGuards(CheckAuthGuard)
   @UseInterceptors(InjectAuthorIdInterceptor)
@@ -238,6 +255,10 @@ export class BlogController {
     await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Posts}/delete/${postId}`,
       dto
+    );
+
+    await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Users}/decrementPostsCount/${dto['authorId']}`
     );
   }
 
@@ -307,6 +328,37 @@ export class BlogController {
     }
     const { data } = await this.httpService.axiosRef.patch(
       `${ApplicationServiceURL.Posts}/${id}`,
+      dto
+    );
+    return data;
+  }
+
+  @ApiResponse({
+    type: CommentRdo,
+    status: HttpStatus.CREATED,
+    description: BlogPostResponseMessages.CommentCreated,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectAuthorIdInterceptor)
+  @Post('/:postId/comments')
+  public async createComment(
+    @Param('postId') postId: string,
+    @Body() dto: CommentCreateDto
+  ) {
+    const { data } = await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Posts}/${postId}/comments`,
       dto
     );
     return data;
