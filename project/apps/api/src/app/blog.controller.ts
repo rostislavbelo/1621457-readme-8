@@ -15,7 +15,8 @@ import {
   Param,
   Query,
   HttpCode,
-  Delete
+  Delete,
+  Patch
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
@@ -33,6 +34,7 @@ import {
   BlogPostResponseMessages,
   BlogPostWithPaginationRdo,
 } from '@project/blog-post';
+import { PostUpdateDto } from './dto/post-update.dto';
 
 @Controller('posts')
 @UseFilters(AxiosExceptionFilter)
@@ -207,7 +209,6 @@ export class BlogController {
     );
     return data;
   }
-
   
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
@@ -238,5 +239,76 @@ export class BlogController {
       `${ApplicationServiceURL.Posts}/delete/${postId}`,
       dto
     );
+  }
+
+  @ApiResponse({
+    type: BlogPostRdo,
+    description: BlogPostResponseMessages.PostUpdated,
+  })
+  @ApiResponse({
+    status: HttpStatus.BAD_REQUEST,
+    description: BlogPostResponseMessages.ValidationError,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: BlogPostResponseMessages.Forbidden,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectAuthorIdInterceptor)
+  @Patch('/:id')
+  public async update(
+    @Param('id') id: string,
+    @Body() dto: PostUpdateDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000000 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+        fileIsRequired: false,
+      })
+    )
+    file?: Express.Multer.File
+  ) {
+    if (dto.type === PostTypes.Photo) {
+      const { data: existsPost } = await this.httpService.axiosRef.get(
+        `${ApplicationServiceURL.Posts}/${id}`
+      );
+      if (existsPost.type === PostTypes.Photo) {
+        dto.content = existsPost.content;
+      }
+      if (file) {
+        const formData = new FormData();
+        formData.append(
+          'file',
+          new Blob([file.buffer], { type: file.mimetype }),
+          file.originalname
+        );
+        const { data } = await this.httpService.axiosRef.post(
+          `${ApplicationServiceURL.Files}/upload`,
+          formData
+        );
+        dto.content = {
+          pictureId: data.id,
+        };
+      } else if (existsPost.type !== PostTypes.Photo) {
+        throw new BadRequestException(
+          `With ${PostTypes.Photo} a "file" field is required.`
+        );
+      }
+    }
+    const { data } = await this.httpService.axiosRef.patch(
+      `${ApplicationServiceURL.Posts}/${id}`,
+      dto
+    );
+    return data;
   }
 }

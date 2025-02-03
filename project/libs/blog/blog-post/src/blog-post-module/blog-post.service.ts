@@ -44,6 +44,11 @@ export class BlogPostService {
     dto: UpdatePostDto
   ): Promise<BlogPostEntity> {
     const existsPost = await this.blogPostRepository.findById(id);
+
+    if (existsPost.authorId !== dto.authorId) {
+      throw new ForbiddenException('Users can only edit their own posts');
+    }
+    
     let isSameTags = true;
     let hasChanges = false;
 

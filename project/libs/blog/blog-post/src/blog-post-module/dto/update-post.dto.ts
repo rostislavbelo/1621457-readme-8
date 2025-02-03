@@ -7,7 +7,8 @@ import {
   Length,
   NotContains,
   ValidateNested,
-  Validate
+  Validate,
+  IsMongoId,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { PostTypes } from '@project/shared/core';
@@ -85,5 +86,11 @@ export class UpdatePostDto {
     | QuoteContentDto
     | TextContentDto
     | VideoContentDto;
+  @ApiProperty({
+    description: 'Author ID',
+    example: '677e53ed7baca31a45997160',
+  })
+  @IsString()
+  @IsMongoId()
+  public authorId: string;
 }
-  

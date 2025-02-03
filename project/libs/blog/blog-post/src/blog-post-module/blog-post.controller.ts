@@ -72,6 +72,10 @@ import {
       description: BlogPostResponseMessages.PostCreated,
     })
     @ApiResponse({
+      status: HttpStatus.BAD_REQUEST,
+      description: BlogPostResponseMessages.ValidationError,
+    })
+    @ApiResponse({
       status: HttpStatus.UNAUTHORIZED,
       description: BlogPostResponseMessages.AuthFailed,
     })
@@ -111,8 +115,28 @@ import {
       await this.blogPostService.deletePost(authorId, postId);
     }
   
-    @Patch('/:id')
+    @ApiResponse({
+      type: BlogPostRdo,
+      description: BlogPostResponseMessages.PostUpdated,
+    })
+    @ApiResponse({
+      status: HttpStatus.BAD_REQUEST,
+      description: BlogPostResponseMessages.ValidationError,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      description: BlogPostResponseMessages.PostNotFound,
+    })
+    @ApiResponse({
+      status: HttpStatus.FORBIDDEN,
+      description: BlogPostResponseMessages.Forbidden,
+    })
+    @ApiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      description: BlogPostResponseMessages.ServerError,
+    })
     @UseInterceptors(PostContentRequestTransform)
+    @Patch('/:id')
     public async update(@Param('id') id: string, @Body() dto: UpdatePostDto) {
       const updatedPost = await this.blogPostService.updatePost(id, dto);
       return fillDto(BlogPostRdo, updatedPost.toPOJO());
