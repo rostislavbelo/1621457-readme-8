@@ -22,7 +22,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('spec', app, document);
 
-  app.setGlobalPrefix(GLOBAL_PREFIX);
   app.useGlobalInterceptors(new RequestIdInterceptor());
   // const port = process.env.PORT || DEFAULT_PORT;
   const port = DEFAULT_PORT;

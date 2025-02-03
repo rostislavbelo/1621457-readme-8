@@ -10,8 +10,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-  .setTitle('The «Blog» service')
-  .setDescription('Blog service API')
+  .setTitle('The API Gateway')
+  .setDescription('The API Gateway API for frontend')
   .setVersion('1.0')
   .build();
 

@@ -40,10 +40,12 @@ export class BlogPostRepository extends BasePostgresRepository<
         ...pojoEntity,
         id: undefined,
         tags: {
-          connectOrCreate: pojoEntity.tags.map((name) => ({
-            where: { name },
-            create: { name },
-          })),
+          connectOrCreate: pojoEntity?.tags
+          ? pojoEntity.tags.map((name) => ({
+              where: { name },
+              create: { name },
+            }))
+          : [],
         },
       },
     });

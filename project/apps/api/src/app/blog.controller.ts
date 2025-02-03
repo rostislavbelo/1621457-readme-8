@@ -1,32 +1,90 @@
 import {
-    Body,
-    Controller,
-    Post,
-    UseFilters,
-    UseGuards,
-    UseInterceptors,
-  } from '@nestjs/common';
-  import { HttpService } from '@nestjs/axios';
-  
-  import { AxiosExceptionFilter } from './filters/axios-exception.filter';
-  import { CheckAuthGuard } from './guards/check-auth.guard';
-  import { ApplicationServiceURL } from './app.config';
-  import { InjectAuthorIdInterceptor } from '@project/interceptors';
-  // import { AddNewPostDto } from './dto/add-new-post.dto';
-  
-  @Controller('blog')
-  @UseFilters(AxiosExceptionFilter)
-  export class BlogController {
-    constructor(private readonly httpService: HttpService) {}
-  
-    @UseGuards(CheckAuthGuard)
-    @UseInterceptors(InjectAuthorIdInterceptor)
-    @Post('/')
-    public async create(@Body() dto) {
-      const { data } = await this.httpService.axiosRef.post(
-        `${ApplicationServiceURL.Blog}/`,
-        dto
-      );
-      return data;
+  Body,
+  Controller,
+  Post,
+  UseFilters,
+  UseGuards,
+  UseInterceptors,
+  FileTypeValidator,
+  HttpStatus,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+
+import { AxiosExceptionFilter } from './filters/axios-exception.filter';
+import { CheckAuthGuard } from './guards/check-auth.guard';
+import { ApplicationServiceURL } from './app.config';
+import { InjectAuthorIdInterceptor } from '@project/interceptors';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { PostCreateDto } from './dto/post-create.dto';
+import { PostTypes } from '@project/shared/core';
+import { ApiResponse } from '@nestjs/swagger';
+import { BlogPostRdo, BlogPostResponseMessages } from '@project/blog-post';
+
+@Controller('blog')
+@UseFilters(AxiosExceptionFilter)
+export class BlogController {
+  constructor(private readonly httpService: HttpService) {}
+
+  @ApiResponse({
+    type: BlogPostRdo,
+    status: HttpStatus.CREATED,
+    description: BlogPostResponseMessages.PostCreated,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectAuthorIdInterceptor)
+  @UseInterceptors(FileInterceptor('file'))
+  @Post('/')
+  public async create(
+    @Body() dto: PostCreateDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000000 }),
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+        fileIsRequired: false,
+      })
+    )
+    file?: Express.Multer.File
+  ) {
+    if (dto.type === PostTypes.Photo) {
+      if (file) {
+        const formData = new FormData();
+        formData.append(
+          'file',
+          new Blob([file.buffer], { type: file.mimetype }),
+          file.originalname
+        );
+        const { data } = await this.httpService.axiosRef.post(
+          `${ApplicationServiceURL.Files}/upload`,
+          formData
+        );
+        dto.content = {
+          pictureId: data.id,
+        };
+      } else {
+        throw new BadRequestException(
+          `With ${PostTypes.Photo} a "file" field is required.`
+        );
+      }
     }
+
+    const { data } = await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Blog}/`,
+      dto
+    );
+    return data;
   }
+}
