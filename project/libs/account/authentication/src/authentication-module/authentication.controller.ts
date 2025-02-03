@@ -161,4 +161,44 @@ export class AuthenticationController {
   ) {
     await this.authService.toggleSubscription(user.sub, id);
   }
+
+  
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: AuthenticationResponseMessage.PostsCountSuccess,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: AuthenticationResponseMessage.UserNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.JwtAuthFailed,
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post('incrementPostsCount/:id')
+  public async incrementPostsCount(
+    @Param('id', MongoIdValidationPipe) id: string
+  ) {
+    this.authService.incrementPostsCount(id);
+  }
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: AuthenticationResponseMessage.PostsCountSuccess,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: AuthenticationResponseMessage.UserNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: AuthenticationResponseMessage.JwtAuthFailed,
+  })
+  @UseGuards(JwtAuthGuard)
+  @Post('decrementPostsCount/:id')
+  public async decrementPostsCount(
+    @Param('id', MongoIdValidationPipe) id: string
+  ) {
+    this.authService.decrementPostsCount(id);
+  }
 }

@@ -32,15 +32,33 @@ import {
   export class BlogPostController {
     constructor(private readonly blogPostService: BlogPostService, private readonly blogCommentService: BlogCommentService) {}
   
+    @ApiResponse({
+      type: BlogPostRdo,
+      status: HttpStatus.OK,
+      description: BlogPostResponseMessages.PostFound,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      description: BlogPostResponseMessages.PostNotFound,
+    })
     @Get('/:id')
     public async show(@Param('id') id: string) {
       const post = await this.blogPostService.getPost(id);
       return fillDto(BlogPostRdo, post.toPOJO());
     }
   
+    @ApiResponse({
+      type: BlogPostWithPaginationRdo,
+      status: HttpStatus.OK,
+      description: BlogPostResponseMessages.PostFound,
+    })
+    @ApiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      description: BlogPostResponseMessages.ServerError,
+    })
     @Get('/')
     public async index(@Query() query: BlogPostQuery) {
-      const postsWithPagination = await this.blogPostService.getAllPosts(query);
+      const postsWithPagination = await this.blogPostService.getPosts(query);
       const result = {
         ...postsWithPagination,
         entities: postsWithPagination.entities.map((post) => post.toPOJO()),

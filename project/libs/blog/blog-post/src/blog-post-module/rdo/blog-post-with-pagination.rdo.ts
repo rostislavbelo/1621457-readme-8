@@ -7,6 +7,7 @@ export class BlogPostWithPaginationRdo {
   @ApiProperty({
     description: 'List of posts',
     example: ['Post1', 'Post2'],
+    type: [BlogPostRdo],
   })
   @Expose()
   @Type(() => BlogPostRdo)

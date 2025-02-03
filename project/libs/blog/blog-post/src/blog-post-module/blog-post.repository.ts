@@ -7,11 +7,19 @@ import {
   PaginationResult,
   Post,
   PostTypes,
+  SortType,
 } from '@project/shared/core';
 import { BlogPostFactory } from './blog-post.factory';
 import { PrismaClientService } from '@project/blog-models';
 import { $Enums, Prisma } from '@prisma/client';
 import { BlogPostQuery } from './blog-post.query';
+
+const defaultInclude = {
+  tags: true,
+  _count: {
+    select: { favorite: true, comments: true },
+  },
+};
 
 @Injectable()
 export class BlogPostRepository extends BasePostgresRepository<
@@ -66,9 +74,7 @@ export class BlogPostRepository extends BasePostgresRepository<
       where: {
         id,
       },
-      include: {
-        tags: true,
-      },
+      include: defaultInclude,
     });
 
     if (!document) {
@@ -92,14 +98,13 @@ export class BlogPostRepository extends BasePostgresRepository<
           set: pojoEntity.tags.map((tag) => ({ name: tag })),
         },
       },
-      include: {
-        tags: true,
-      },
+      include: defaultInclude,
     });
   }
 
   public async find(
-    query?: BlogPostQuery
+    query?: BlogPostQuery,
+    currentUserId?: string
   ): Promise<PaginationResult<BlogPostEntity>> {
     const skip =
       query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
@@ -117,8 +122,36 @@ export class BlogPostRepository extends BasePostgresRepository<
       };
     }
 
-    if (query?.sortDirection) {
-      orderBy.createdAt = query.sortDirection;
+    if (query?.search) {
+      where.content = {
+        path: ['title'],
+        string_contains: query.search,
+      };
+    }
+    if (query?.authorId) {
+      where.authorId = query.authorId;
+    }
+    if (query?.drafts) {
+      where.authorId = currentUserId;
+      where.published = false;
+    } else {
+      where.published = true;
+    }
+    if (query?.type) {
+      where.type = query.type;
+    }
+    if (query?.sortBy) {
+      switch (query?.sortBy) {
+        case SortType.CreatedAt:
+          orderBy.createdAt = query.sortDirection;
+          break;
+        case SortType.CommentsCount:
+          orderBy.comments = { _count: query.sortDirection };
+          break;
+        case SortType.LikesCount:
+          orderBy.favorite = { _count: query.sortDirection };
+          break;
+      }
     }
 
     const [records, postCount] = await Promise.all([
@@ -127,9 +160,7 @@ export class BlogPostRepository extends BasePostgresRepository<
         orderBy,
         skip,
         take,
-        include: {
-          tags: true,
-        },
+        include: defaultInclude,
       }),
       this.getPostCount(where),
     ]);
@@ -150,6 +181,10 @@ export class BlogPostRepository extends BasePostgresRepository<
       tags: {
         name: string;
       }[];
+      _count: {
+        comments: number;
+        favorite: number;
+      };
     } & {
       id: string;
       authorId: string;
@@ -168,6 +203,8 @@ export class BlogPostRepository extends BasePostgresRepository<
       tags: document.tags.map(({ name }) => name),
       content:
         document.content as BlogContents[(typeof PostTypes)[keyof typeof PostTypes]],
+        likesCount: document._count.favorite,
+        commentsCount: document._count.comments,
     };
   }
 }

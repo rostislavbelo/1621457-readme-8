@@ -17,6 +17,8 @@ import {
     public tags: string[];
     public createdAt?: Date;
     public updatedAt?: Date;
+    public likesCount: number;
+    public commentsCount: number;
   
     constructor(post?: Post) {
       super();
@@ -39,6 +41,8 @@ import {
       this.tags = post.tags;
       this.createdAt = post.createdAt;
       this.updatedAt = post.updatedAt;
+      this.likesCount = post.likesCount;
+      this.commentsCount = post.commentsCount;
     }
   
     public toPOJO(): Post {
@@ -54,6 +58,8 @@ import {
         tags: this.tags,
         createdAt: this.createdAt,
         updatedAt: this.updatedAt,
+        likesCount: this.likesCount,
+        commentsCount: this.commentsCount,
       };
     }
   }

@@ -171,4 +171,21 @@ export class AuthenticationService {
 
     return subscriber;
   }
+
+  public async incrementPostsCount(userId: string) {
+    const existUser = await this.blogUserRepository.findById(userId);
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    existUser.postsCount += 1;
+    await this.blogUserRepository.update(existUser);
+  }
+  public async decrementPostsCount(userId: string) {
+    const existUser = await this.blogUserRepository.findById(userId);
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    existUser.postsCount -= 1;
+    await this.blogUserRepository.update(existUser);
+  }
 }

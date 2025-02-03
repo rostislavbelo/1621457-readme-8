@@ -11,7 +11,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 export class BlogPostService {
   constructor(private readonly blogPostRepository: BlogPostRepository) {}
 
-  public async getAllPosts(
+  public async getPosts(
     query?: BlogPostQuery
   ): Promise<PaginationResult<BlogPostEntity>> {
     return this.blogPostRepository.find(query);

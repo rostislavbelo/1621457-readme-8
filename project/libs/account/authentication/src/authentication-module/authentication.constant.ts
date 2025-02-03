@@ -19,6 +19,7 @@ export const AuthenticationResponseMessage = {
     RefreshFailure: 'Wrong refresh token',
     SubsciptionSucess: 'Successfullly subscribed or unsubscribed',
     JwtAuthFailed: 'JWT authentification failed',
+    PostsCountSuccess: 'Posts count was successfully altered.',
   } as const;
 
 export const AuthenticationValidateMessage = {
