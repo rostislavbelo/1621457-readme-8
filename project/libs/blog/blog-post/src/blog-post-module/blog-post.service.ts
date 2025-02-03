@@ -86,4 +86,21 @@ export class BlogPostService {
     }
     await this.blogPostRepository.deleteLike(userId, postId);
   }
+
+  public async createRepost(userId: string, postId: string) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+    existsPost.originalAuthorId = existsPost.authorId;
+    existsPost.originalId = existsPost.id;
+    existsPost.reposted = true;
+    delete existsPost.createdAt;
+    existsPost.id = undefined;
+    existsPost.authorId = userId;
+    delete existsPost.commentsCount;
+    delete existsPost.likesCount;
+    await this.blogPostRepository.save(existsPost);
+    return existsPost;
+  }
 }

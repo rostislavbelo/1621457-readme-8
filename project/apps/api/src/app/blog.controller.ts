@@ -182,4 +182,28 @@ export class BlogController {
       dto
     );
   }
+
+  @ApiResponse({
+    type: BlogPostRdo,
+    status: HttpStatus.CREATED,
+    description: BlogPostResponseMessages.PostCreated,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectAuthorIdInterceptor)
+  @Post('repost/:postId')
+  public async repost(@Param('postId') postId: string, @Body() dto) {
+    const { data } = await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Posts}/repost/${postId}`,
+      dto
+    );
+    return data;
+  }
 }

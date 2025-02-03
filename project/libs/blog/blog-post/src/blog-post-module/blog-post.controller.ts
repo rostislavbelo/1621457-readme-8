@@ -142,12 +142,34 @@ import {
     status: HttpStatus.NOT_FOUND,
     description: BlogPostResponseMessages.PostNotFound,
   })
-  @Post('deleteLike/:postId')
   @HttpCode(HttpStatus.NO_CONTENT)
+  @Post('deleteLike/:postId')
   public async deleteLike(
     @Param('postId') postId: string,
     @Body() { authorId }: AuthorIdDto
   ) {
     await this.blogPostService.deleteLike(authorId, postId);
+  }
+
+  @ApiResponse({
+    type: BlogPostRdo,
+    status: HttpStatus.CREATED,
+    description: BlogPostResponseMessages.LikeDeleted,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @Post('repost/:postId')
+  public async repost(
+    @Param('postId') postId: string,
+    @Body() { authorId }: AuthorIdDto
+  ) {
+    const newPost = await this.blogPostService.createRepost(authorId, postId);
+    return fillDto(BlogPostRdo, newPost);
   }
 }
