@@ -98,6 +98,7 @@ export class BlogPostRepository extends BasePostgresRepository<
           })),
           set: pojoEntity.tags.map((tag) => ({ name: tag })),
         },
+        published: entity.published,
       },
       include: defaultInclude,
     });

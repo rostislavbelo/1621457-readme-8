@@ -47,4 +47,11 @@ export class PostUpdateDto {
     required: false,
   })
   public file?: Express.Multer.File;
+
+  @ApiProperty({
+    description: 'Whether the post is published',
+    example: true,
+    required: false,
+  })
+  public published: boolean;
 }

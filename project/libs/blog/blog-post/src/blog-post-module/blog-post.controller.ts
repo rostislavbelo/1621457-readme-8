@@ -142,16 +142,6 @@ import {
       return fillDto(BlogPostRdo, updatedPost.toPOJO());
     }
 
-    @Post('/:postId/comments')
-    public async createComment(
-      @Param('postId') postId: string,
-      @Body() dto: CreateCommentDto
-    ) {
-      const newComment = await this.blogCommentService.createComment(postId, dto);
-      return fillDto(CommentRdo, newComment.toPOJO());
-    }
-
-    
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: BlogPostResponseMessages.LikeAdded,
@@ -213,5 +203,14 @@ import {
   ) {
     const newPost = await this.blogPostService.createRepost(authorId, postId);
     return fillDto(BlogPostRdo, newPost);
+  }
+
+  @Post('/:postId/comments')
+  public async createComment(
+    @Param('postId') postId: string,
+    @Body() dto: CreateCommentDto
+  ) {
+    const newComment = await this.blogCommentService.createComment(postId, dto);
+    return fillDto(CommentRdo, newComment.toPOJO());
   }
 }
