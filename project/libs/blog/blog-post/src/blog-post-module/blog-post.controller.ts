@@ -26,6 +26,7 @@ import {
   } from '@project/blog-comment';
   import { ApiResponse, ApiTags } from '@nestjs/swagger';
   import { BlogPostResponseMessages } from './blog-post.constant';
+  import { AuthorIdDto } from './dto/author-id.dto';
   
   @ApiTags('posts')
   @Controller('posts')
@@ -107,4 +108,46 @@ import {
       const newComment = await this.blogCommentService.createComment(postId, dto);
       return fillDto(CommentRdo, newComment.toPOJO());
     }
+
+    
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: BlogPostResponseMessages.LikeAdded,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @Post('addLike/:postId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async saveLike(
+    @Param('postId') postId: string,
+    @Body() { authorId }: AuthorIdDto
+  ) {
+    await this.blogPostService.addLike(authorId, postId);
   }
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: BlogPostResponseMessages.LikeDeleted,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @Post('deleteLike/:postId')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  public async deleteLike(
+    @Param('postId') postId: string,
+    @Body() { authorId }: AuthorIdDto
+  ) {
+    await this.blogPostService.deleteLike(authorId, postId);
+  }
+}

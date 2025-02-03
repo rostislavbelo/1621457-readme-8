@@ -38,10 +38,11 @@ model Comment {
 }
 
 model Favorite {
-  id     String @id @default(uuid())
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   postId String @map("post_id")
   userId String @map("user_id")
+
+  @@id([userId, postId])
   @@map("favorites")
 }
 

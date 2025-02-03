@@ -71,4 +71,19 @@ export class BlogPostService {
 
     return existsPost;
   }
+  
+  public async addLike(userId: string, postId: string) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+    await this.blogPostRepository.addLike(userId, postId);
+  }
+  public async deleteLike(userId: string, postId: string) {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+    await this.blogPostRepository.deleteLike(userId, postId);
+  }
 }
