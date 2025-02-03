@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { PaginationResult } from '@project/shared/core';
 import { BlogPostRepository } from './blog-post.repository';
 import { BlogPostQuery } from './blog-post.query';
@@ -24,12 +24,15 @@ export class BlogPostService {
     return newPost;
   }
 
-  public async deletePost(id: string): Promise<void> {
-    try {
-      await this.blogPostRepository.deleteById(id);
-    } catch {
-      throw new NotFoundException(`Post with ID ${id} not found`);
+  public async deletePost(userId: string, postId): Promise<void> {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with ID ${postId} not found`);
     }
+    if (existsPost.authorId !== userId) {
+      throw new ForbiddenException('Users can only delete their own posts');
+    }
+    await this.blogPostRepository.deleteById(postId);
   }
 
   public async getPost(id: string): Promise<BlogPostEntity> {

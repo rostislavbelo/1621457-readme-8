@@ -1,7 +1,6 @@
 import {
     Body,
     Controller,
-    Delete,
     Get,
     HttpCode,
     HttpStatus,
@@ -87,10 +86,29 @@ import {
       return fillDto(BlogPostRdo, newPost.toPOJO());
     }
   
-    @Delete('/:id')
+    @ApiResponse({
+      status: HttpStatus.NO_CONTENT,
+      description: BlogPostResponseMessages.PostDeleted,
+    })
+    @ApiResponse({
+      status: HttpStatus.NOT_FOUND,
+      description: BlogPostResponseMessages.PostNotFound,
+    })
+    @ApiResponse({
+      status: HttpStatus.FORBIDDEN,
+      description: BlogPostResponseMessages.Forbidden,
+    })
+    @ApiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      description: BlogPostResponseMessages.ServerError,
+    })
     @HttpCode(HttpStatus.NO_CONTENT)
-    public async destroy(@Param('id') id: string) {
-      await this.blogPostService.deletePost(id);
+    @Post('/delete/:postId')
+    public async destroy(
+      @Param('postId') postId: string,
+      @Body() { authorId }: AuthorIdDto
+    ) {
+      await this.blogPostService.deletePost(authorId, postId);
     }
   
     @Patch('/:id')

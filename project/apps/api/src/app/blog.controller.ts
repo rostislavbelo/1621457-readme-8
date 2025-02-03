@@ -15,6 +15,7 @@ import {
   Param,
   Query,
   HttpCode,
+  Delete
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
@@ -205,5 +206,37 @@ export class BlogController {
       dto
     );
     return data;
+  }
+
+  
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: BlogPostResponseMessages.PostDeleted,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.FORBIDDEN,
+    description: BlogPostResponseMessages.Forbidden,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @UseGuards(CheckAuthGuard)
+  @UseInterceptors(InjectAuthorIdInterceptor)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete('/:postId')
+  public async destroy(@Param('postId') postId: string, @Body() dto) {
+    await this.httpService.axiosRef.post(
+      `${ApplicationServiceURL.Posts}/delete/${postId}`,
+      dto
+    );
   }
 }
