@@ -28,7 +28,7 @@ export class LinkContentDto extends PostContent {
 
   @ApiProperty({
     description: `Post description. Used with ${PostTypes.Link} (optional). Max 300 characters.`,
-    example: 'Описание максимум 300 символов',
+    example: 'Описание до 300 символов',
     required: false,
   })
   @IsOptional()
@@ -93,7 +93,7 @@ export class TextContentDto extends PostContent {
 export class VideoContentDto extends PostContent {
   @ApiProperty({
     description: `Post title. Used with ${PostTypes.Text} and ${PostTypes.Video} types. 20-50 symbols.`,
-    example: 'Заголовок более 20 символов',
+    example: 'Заголовок на 20+ символов',
   })
   @IsString()
   @Length(20, 50)

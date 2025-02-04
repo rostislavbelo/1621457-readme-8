@@ -25,6 +25,7 @@ import {
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 
 const ANY_LETTERS_REGEXP = /^\p{L}.*$/u;
+
 @ValidatorConstraint({ name: 'startsWithLetter' })
 export class startsWithLetterValidator implements ValidatorConstraintInterface {
   validate(values: string[] = []): boolean {

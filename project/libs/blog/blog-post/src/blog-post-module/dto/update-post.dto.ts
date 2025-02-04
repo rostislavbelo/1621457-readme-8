@@ -24,6 +24,7 @@ import {
 import { ApiExtraModels, ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { startsWithLetterValidator } from './create-post.dto';
 
+
 @ApiExtraModels(
   LinkContentDto,
   PhotoContentDto,
@@ -85,6 +86,7 @@ export class UpdatePostDto {
     | QuoteContentDto
     | TextContentDto
     | VideoContentDto;
+
   @ApiProperty({
     description: 'Author ID',
     example: '677e53ed7baca31a45997160',

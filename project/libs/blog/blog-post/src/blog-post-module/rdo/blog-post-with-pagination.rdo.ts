@@ -3,7 +3,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BlogPostRdo } from './blog-post.rdo';
 
 export class BlogPostWithPaginationRdo {
-
   @ApiProperty({
     description: 'List of posts',
     example: ['Post1', 'Post2'],

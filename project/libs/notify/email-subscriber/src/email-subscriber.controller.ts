@@ -26,9 +26,9 @@ export class EmailSubscriberController {
     await this.mailService.sendNotifyNewSubscriber(data.subscriber);
   }
   @RabbitSubscribe({
-    exchange: 'readme.notifications',
+    exchange: 'readme.notify',
     routingKey: RabbitRouting.NotifyNewPosts,
-    queue: 'readme.notifications.newPosts',
+    queue: 'readme.notify.newPosts',
   })
   public async notifyNewPosts(data: { type: string; posts: Post[] }) {
     console.log(`Notify new posts type: ${data?.type}`);
