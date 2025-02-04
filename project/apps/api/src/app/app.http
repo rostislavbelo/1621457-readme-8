@@ -3,7 +3,7 @@ POST http://localhost:3000/api/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "robocop@notfound.local",
+  "email": "robocop99@notfound.local",
   "name": "Keks",
   "password": "123456"
 }
@@ -40,7 +40,7 @@ POST http://localhost:3000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "robocop@notfound.local",
+  "email": "robocop99@notfound.local",
   "password": "123456"
 }
 
@@ -55,7 +55,6 @@ Content-Type: application/json
   "oldPassword": "123456",
   "newPassword": "0123456"
 }
-
 
 ###
 
@@ -80,7 +79,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyY
 
 # Create a new post
 POST http://localhost:3000/api/posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY5NjI3MSwiZXhwIjoxNzM4Njk3MTcxfQ.SZtJAob7OsjxKnRgTn55XjoGyDlOl7lC9aIEMLQsTdU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2EyNzRhYWJhZjFiMmMzN2RmZDU5N2EiLCJlbWFpbCI6InJvYm9jb3A5OUBub3Rmb3VuZC5sb2NhbCIsIm5hbWUiOiJLZWtzIiwiaWF0IjoxNzM4NzAyNTE2LCJleHAiOjE3Mzg3MDM0MTZ9.E2KbaPuk47g8P7FLaX9lUaULC-8Z5Lv3DzJNAnGpdsQ
 Content-Type: application/json
 
 {
@@ -130,12 +129,12 @@ GET http://localhost:3000/api/posts/392d4c1b-de74-49d0-b325-b07cbbaebdf3 HTTP/1.
 
 # Add like to post
 POST http://localhost:3000/api/posts/addLike/6d308040-96a2-4162-bea6-2338e9976540
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY5NjI3MSwiZXhwIjoxNzM4Njk3MTcxfQ.SZtJAob7OsjxKnRgTn55XjoGyDlOl7lC9aIEMLQsTdU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY5NzY1NywiZXhwIjoxNzM4Njk4NTU3fQ.1bZVm9KsnecMBdZ9oaBfZXPy6I1jFpbJthp1OwSgPCA
 ###
 
 # Delete like to post
 POST http://localhost:3000/api/posts/deleteLike/0ac9ffad-9145-427d-b1ab-46fe4a5a6120
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY5ODc2MCwiZXhwIjoxNzM4Njk5NjYwfQ.jLGqoo_gMYmEhGHbhPXIDVxTVqcaFxG7zHOZ-N4BTws
 
 ###
 
