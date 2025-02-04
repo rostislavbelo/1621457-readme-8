@@ -33,6 +33,24 @@ import {
   @Controller('posts')
   export class BlogPostController {
     constructor(private readonly blogPostService: BlogPostService, private readonly notificationsService: BlogNotificationsService) {}
+
+    @ApiResponse({
+      status: HttpStatus.NO_CONTENT,
+      description: BlogPostResponseMessages.NotificationsSent,
+    })
+    @ApiResponse({
+      status: HttpStatus.INTERNAL_SERVER_ERROR,
+      description: BlogPostResponseMessages.ServerError,
+    })
+    @HttpCode(HttpStatus.NO_CONTENT)
+    @Get('notify')
+    public async notifyNewPosts() {
+      const posts = await this.blogPostService.getPostsToNotify();
+      if (!posts?.length) return;
+      const pojoPosts = posts.map((post) => post.toPOJO());
+      await this.notificationsService.notifyNewPosts(pojoPosts);
+      // await this.blogPostService.makeNotifyRecord();
+    }
   
     @ApiResponse({
       type: BlogPostRdo,

@@ -15,6 +15,7 @@ import { PrismaClientService } from '@project/blog-models';
 import { $Enums, Prisma } from '@prisma/client';
 import { BlogPostQuery } from './blog-post.query';
 
+
 const defaultInclude = {
   tags: true,
   _count: {
@@ -50,11 +51,11 @@ export class BlogPostRepository extends BasePostgresRepository<
         id: undefined,
         tags: {
           connectOrCreate: pojoEntity?.tags
-          ? pojoEntity.tags.map((name) => ({
-              where: { name },
-              create: { name },
-            }))
-          : [],
+            ? pojoEntity.tags.map((name) => ({
+                where: { name },
+                create: { name },
+              }))
+            : [],
         },
       },
     });
@@ -131,18 +132,22 @@ export class BlogPostRepository extends BasePostgresRepository<
         string_contains: query.search,
       };
     }
+
     if (query?.authorId) {
       where.authorId = query.authorId;
     }
+
     if (query?.drafts) {
       where.authorId = currentUserId;
       where.published = false;
     } else {
       where.published = true;
     }
+
     if (query?.type) {
       where.type = query.type;
     }
+
     if (query?.sortBy) {
       switch (query?.sortBy) {
         case SortType.CreatedAt:
@@ -183,16 +188,21 @@ export class BlogPostRepository extends BasePostgresRepository<
     const existsLike = await this.client.favorite.findFirst({
       where: { userId, postId },
     });
+
     if (existsLike) return;
+
     await this.client.favorite.create({
       data: { userId, postId },
     });
   }
+
   public async deleteLike(userId: string, postId: string) {
     const existsLike = await this.client.favorite.findFirst({
       where: { userId, postId },
     });
+
     if (!existsLike) return;
+
     await this.client.favorite.delete({
       where: {
         userId_postId: { userId, postId },
@@ -206,19 +216,24 @@ export class BlogPostRepository extends BasePostgresRepository<
         updatedAt: SortDirection.Desc,
       },
     });
+
     const where: Prisma.PostWhereInput = {};
+
     if (lastNotify) {
       where.createdAt = { gt: lastNotify.updatedAt };
     }
+
     const records = await this.client.post.findMany({
       where,
       orderBy: { createdAt: SortDirection.Desc },
       include: defaultInclude,
     });
+
     return records.map((record) =>
       this.createEntityFromDocument(this.transformRawDocument(record))
     );
   }
+
   public async makeNotifyRecord() {
     await this.client.notification.create({ data: {} });
   }
@@ -250,8 +265,8 @@ export class BlogPostRepository extends BasePostgresRepository<
       tags: document.tags.map(({ name }) => name),
       content:
         document.content as BlogContents[(typeof PostTypes)[keyof typeof PostTypes]],
-        likesCount: document._count.favorite,
-        commentsCount: document._count.comments,
+      likesCount: document._count.favorite,
+      commentsCount: document._count.comments,
     };
   }
 }

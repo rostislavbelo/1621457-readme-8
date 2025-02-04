@@ -4,6 +4,6 @@ import { BlogPostModule } from '@project/blog-post';
 import { BlogConfigModule } from '@project/blog-config';
 
 @Module({
-  imports: [BlogCommentModule, BlogPostModule, BlogCommentModule],
+  imports: [BlogConfigModule, BlogPostModule, BlogCommentModule],
 })
 export class AppModule {}
