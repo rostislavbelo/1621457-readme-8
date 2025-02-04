@@ -79,24 +79,24 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyY
 ###
 
 # Create a new post
-POST http://localhost:3000/api/blog HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3NTYzOCwiZXhwIjoxNzM4Njc2NTM4fQ.ZWTqoPLG4Ee7DBT0q9NxDRT7QHKuo8LTh-UTHLTt4RY
 Content-Type: application/json
 
 {
   "type": "TEXT",
   "tags": ["cats", "new"],
   "content": {
-    "title": "Тест API Gateway Тест API Gateway",
-    "teaser": "Текст с анонсом публикации. Минимальная длина 50 символов, максимальная 255.",
+    "title": "Тест API Gateway11 Тест API Gateway",
+    "teaser": "Текст с анонсом публикации11. Минимальная длина 50 символов, максимальная 255.",
     "text": "Текст публикации (обязательно). Минимальная длина 100 символов, максимальная 1024 символа. Текст публикации (обязательно)."
   }
 }
 ###
 
 # Create a new PHOTO post
-POST http://localhost:3000/api/blog HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+POST http://localhost:3000/api/posts HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3NTYzOCwiZXhwIjoxNzM4Njc2NTM4fQ.ZWTqoPLG4Ee7DBT0q9NxDRT7QHKuo8LTh-UTHLTt4RY
 Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
@@ -124,13 +124,13 @@ GET http://localhost:3000/api/posts?limit=2&sortDirection=desc&page=1&search=Т�
 ###
 
 # Get post by id
-GET http://localhost:3000/api/posts/0ac9ffad-9145-427d-b1ab-46fe4a5a6120 HTTP/1.1
+GET http://localhost:3000/api/posts/392d4c1b-de74-49d0-b325-b07cbbaebdf3 HTTP/1.1
 
 ###
 
 # Add like to post
-POST http://localhost:3000/api/posts/addLike/0ac9ffad-9145-427d-b1ab-46fe4a5a6120
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+POST http://localhost:3000/api/posts/addLike/999255f7-70e9-40cb-90dc-3618641319e3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3NjYyOSwiZXhwIjoxNzM4Njc3NTI5fQ.-KYSAwYkUIUM1bjEmgN5nqbSU0pwQBiaKCs9DfyEBZ8
 
 ###
 

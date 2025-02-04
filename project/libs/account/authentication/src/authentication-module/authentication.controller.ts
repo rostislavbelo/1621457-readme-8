@@ -175,7 +175,6 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: AuthenticationResponseMessage.JwtAuthFailed,
   })
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('incrementPostsCount/:id')
   public async incrementPostsCount(
@@ -195,7 +194,6 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: AuthenticationResponseMessage.JwtAuthFailed,
   })
-  @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   @Post('decrementPostsCount/:id')
   public async decrementPostsCount(
