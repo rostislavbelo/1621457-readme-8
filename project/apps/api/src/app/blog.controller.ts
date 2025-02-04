@@ -16,7 +16,7 @@ import {
   Query,
   HttpCode,
   Delete,
-  Patch
+  Patch,
 } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
@@ -80,15 +80,18 @@ export class BlogController {
     if (dto.type === PostTypes.Photo) {
       if (file) {
         const formData = new FormData();
+
         formData.append(
           'file',
           new Blob([file.buffer], { type: file.mimetype }),
           file.originalname
         );
+
         const { data } = await this.httpService.axiosRef.post(
           `${ApplicationServiceURL.Files}/upload`,
           formData
         );
+
         dto.content = {
           pictureId: data.id,
         };
@@ -107,8 +110,10 @@ export class BlogController {
     await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Users}/incrementPostsCount/${dto['authorId']}`
     );
+
     return data;
   }
+
   @ApiResponse({
     type: BlogPostRdo,
     status: HttpStatus.OK,
@@ -129,6 +134,7 @@ export class BlogController {
     );
     return data;
   }
+
   @ApiResponse({
     type: BlogPostWithPaginationRdo,
     status: HttpStatus.OK,
@@ -149,7 +155,7 @@ export class BlogController {
 
     return data;
   }
-  
+
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: BlogPostResponseMessages.LikeAdded,
@@ -176,6 +182,7 @@ export class BlogController {
       dto
     );
   }
+
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: BlogPostResponseMessages.LikeDeleted,
@@ -228,9 +235,10 @@ export class BlogController {
       `${ApplicationServiceURL.Posts}/repost/${postId}`,
       dto
     );
+
     return data;
   }
-  
+
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: BlogPostResponseMessages.PostDeleted,
@@ -307,20 +315,25 @@ export class BlogController {
       const { data: existsPost } = await this.httpService.axiosRef.get(
         `${ApplicationServiceURL.Posts}/${id}`
       );
+
       if (existsPost.type === PostTypes.Photo) {
         dto.content = existsPost.content;
       }
+
       if (file) {
         const formData = new FormData();
+
         formData.append(
           'file',
           new Blob([file.buffer], { type: file.mimetype }),
           file.originalname
         );
+
         const { data } = await this.httpService.axiosRef.post(
           `${ApplicationServiceURL.Files}/upload`,
           formData
         );
+
         dto.content = {
           pictureId: data.id,
         };
@@ -330,10 +343,12 @@ export class BlogController {
         );
       }
     }
+
     const { data } = await this.httpService.axiosRef.patch(
       `${ApplicationServiceURL.Posts}/${id}`,
       dto
     );
+
     return data;
   }
 
@@ -365,6 +380,7 @@ export class BlogController {
       `${ApplicationServiceURL.Posts}/${postId}/comments`,
       dto
     );
+
     return data;
   }
 
@@ -396,6 +412,7 @@ export class BlogController {
         params: query,
       }
     );
+
     return data;
   }
 }
