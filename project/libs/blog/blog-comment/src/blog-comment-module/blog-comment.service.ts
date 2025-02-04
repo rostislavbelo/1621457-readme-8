@@ -3,6 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { BlogCommentRepository } from './blog-comment.repository';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { BlogCommentQuery } from './blog-comment.query';
+import { PaginationResult } from '@project/shared/core';
 
 @Injectable()
 export class BlogCommentService {
@@ -12,8 +14,11 @@ export class BlogCommentService {
     return this.blogCommentRepository.findById(id);
   }
 
-  public async getComments(postId: string): Promise<BlogCommentEntity[]> {
-    return await this.blogCommentRepository.findByPostId(postId);
+  public async getComments(
+    postId: string,
+    query: BlogCommentQuery
+  ): Promise<PaginationResult<BlogCommentEntity>> {
+    return await this.blogCommentRepository.findByPostId(postId, query);
   }
 
   public async createComment(

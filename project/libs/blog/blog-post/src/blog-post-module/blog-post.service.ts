@@ -6,7 +6,7 @@ import { BlogPostEntity } from './blog-post.entity';
 import { CreatePostDto } from './dto/create-post.dto';
 import { BlogPostFactory } from './blog-post.factory';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { BlogCommentService, CreateCommentDto } from '@project/blog-comment';
+import { BlogCommentService, CreateCommentDto, BlogCommentEntity, BlogCommentQuery } from '@project/blog-comment';
 
 @Injectable()
 export class BlogPostService {
@@ -123,5 +123,16 @@ export class BlogPostService {
     }
     const newComment = await this.blogCommentService.createComment(postId, dto);
     return newComment;
+  }
+
+  public async getComments(
+    postId: string,
+    query: BlogCommentQuery
+  ): Promise<PaginationResult<BlogCommentEntity>> {
+    const existsPost = await this.blogPostRepository.findById(postId);
+    if (!existsPost) {
+      throw new NotFoundException(`Post with id ${postId} was not found`);
+    }
+    return this.blogCommentService.getComments(postId, query);
   }
 }

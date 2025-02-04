@@ -35,8 +35,12 @@ import {
   BlogPostWithPaginationRdo,
 } from '@project/blog-post';
 import { PostUpdateDto } from './dto/post-update.dto';
-import { CommentRdo } from '@project/blog-comment';
 import { CommentCreateDto } from './dto/comment-create.dto';
+import {
+  BlogCommentQuery,
+  BlogCommentWithPaginationRdo,
+  CommentRdo,
+} from '@project/blog-comment';
 
 @Controller('posts')
 @UseFilters(AxiosExceptionFilter)
@@ -360,6 +364,37 @@ export class BlogController {
     const { data } = await this.httpService.axiosRef.post(
       `${ApplicationServiceURL.Posts}/${postId}/comments`,
       dto
+    );
+    return data;
+  }
+
+  @ApiResponse({
+    type: BlogCommentWithPaginationRdo,
+    status: HttpStatus.OK,
+    description: BlogPostResponseMessages.CommentsFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @Get('/:postId/comments')
+  public async getComments(
+    @Param('postId') postId: string,
+    @Query() query: BlogCommentQuery
+  ) {
+    const { data } = await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Posts}/${postId}/comments`,
+      {
+        params: query,
+      }
     );
     return data;
   }

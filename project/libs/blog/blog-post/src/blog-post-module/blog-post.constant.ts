@@ -20,4 +20,5 @@ export const BlogPostResponseMessages = {
   PostUpdated: 'Post was updated',
   ValidationError: 'Validation error',
   CommentCreated: 'Comment was created',
+  CommentsFound: 'Comments were found',
 } as const;

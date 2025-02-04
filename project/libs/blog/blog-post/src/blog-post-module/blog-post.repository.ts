@@ -37,7 +37,7 @@ export class BlogPostRepository extends BasePostgresRepository<
     return this.client.post.count({ where });
   }
 
-  private calculatePostsPage(totalCount: number, limit: number): number {
+  private calculatePostsPages(totalCount: number, limit: number): number {
     return Math.ceil(totalCount / limit);
   }
 
@@ -172,7 +172,7 @@ export class BlogPostRepository extends BasePostgresRepository<
         this.createEntityFromDocument(this.transformRawDocument(record))
       ),
       currentPage: query?.page,
-      totalPages: this.calculatePostsPage(postCount, take),
+      totalPages: this.calculatePostsPages(postCount, take),
       itemsPerPage: take,
       totalItems: postCount,
     };

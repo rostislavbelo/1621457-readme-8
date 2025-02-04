@@ -1,10 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaClientService } from '@project/blog-models';
-import { Comment } from '@project/shared/core';
+import { Comment, PaginationResult, SortDirection } from '@project/shared/core';
 import { BasePostgresRepository } from '@project/data-access';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { BlogCommentFactory } from './blog-comment.factory';
-import { MAX_COMMENT_LIMIT } from './blog-comment.constant';
+import { BlogCommentQuery } from './blog-comment.query';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BlogCommentRepository extends BasePostgresRepository<
@@ -40,23 +41,44 @@ export class BlogCommentRepository extends BasePostgresRepository<
     return this.createEntityFromDocument(document);
   }
 
-  // public async find(): Promise<BlogCommentEntity[]> {
-  //   const documents = await this.client.comment.findMany({
-  //     take: MAX_COMMENT_LIMIT,
-  //   });
+  private async getCommentCount(
+    where: Prisma.CommentWhereInput
+  ): Promise<number> {
+    return this.client.comment.count({ where });
+  }
 
-  //   return documents.map((document) => this.createEntityFromDocument(document));
-  // }
+  private calculateCommentsPages(totalCount: number, limit: number): number {
+    return Math.ceil(totalCount / limit);
+  }
 
-  public async findByPostId(postId: string): Promise<BlogCommentEntity[]> {
-    const records = await this.client.comment.findMany({
-      where: {
-        postId,
-      },
-      take: MAX_COMMENT_LIMIT,
-    });
+  public async findByPostId(
+    postId: string,
+    query: BlogCommentQuery
+  ): Promise<PaginationResult<BlogCommentEntity>> {
+    const skip =
+      query?.page && query?.limit ? (query.page - 1) * query.limit : undefined;
+    const take = query?.limit;
+    const where: Prisma.CommentWhereInput = {};
+    where.postId = postId;
+    const [records, commentCount] = await Promise.all([
+      this.client.comment.findMany({
+        where,
+        take,
+        skip,
+        orderBy: {
+          createdAt: SortDirection.Desc,
+        },
+      }),
+      this.getCommentCount(where),
+    ]);
 
-    return records.map((record) => this.createEntityFromDocument(record));
+    return {
+      entities: records.map((record) => this.createEntityFromDocument(record)),
+      currentPage: query?.page,
+      totalPages: this.calculateCommentsPages(commentCount, take),
+      itemsPerPage: take,
+      totalItems: commentCount,
+    };
   }
 
   public async deleteById(id: string): Promise<void> {
@@ -66,13 +88,4 @@ export class BlogCommentRepository extends BasePostgresRepository<
       },
     });
   }
-
-  // public async update(entity: BlogCommentEntity): Promise<void> {
-  //   await this.client.comment.update({
-  //     where: { id: entity.id },
-  //     data: {
-  //       text: entity.text,
-  //     },
-  //   });
-  // }
 }

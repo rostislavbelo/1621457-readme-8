@@ -22,6 +22,8 @@ import {
     BlogCommentService,
     CommentRdo,
     CreateCommentDto,
+    BlogCommentQuery,
+    BlogCommentWithPaginationRdo,
   } from '@project/blog-comment';
   import { ApiResponse, ApiTags } from '@nestjs/swagger';
   import { BlogPostResponseMessages } from './blog-post.constant';
@@ -245,5 +247,41 @@ import {
   ) {
     const newComment = await this.blogPostService.createComment(postId, dto);
     return fillDto(CommentRdo, newComment.toPOJO());
+  }
+
+  
+  @ApiResponse({
+    type: BlogCommentWithPaginationRdo,
+    status: HttpStatus.OK,
+    description: BlogPostResponseMessages.CommentsFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.UNAUTHORIZED,
+    description: BlogPostResponseMessages.AuthFailed,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: BlogPostResponseMessages.PostNotFound,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @Get('/:postId/comments')
+  public async getComments(
+    @Param('postId') postId: string,
+    @Query() query: BlogCommentQuery
+  ) {
+    const commentsWithPagination = await this.blogPostService.getComments(
+      postId,
+      query
+    );
+    const result = {
+      ...commentsWithPagination,
+      entities: commentsWithPagination.entities.map((comment) =>
+        comment.toPOJO()
+      ),
+    };
+    return fillDto(BlogCommentWithPaginationRdo, result);
   }
 }
