@@ -10,7 +10,6 @@ const GLOBAL_PREFIX = 'api';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
   const config = new DocumentBuilder()
     .setTitle('The API Gateway')
     .setDescription('The API Gateway API for frontend')
@@ -23,7 +22,6 @@ async function bootstrap() {
   SwaggerModule.setup('spec', app, document);
 
   app.useGlobalInterceptors(new RequestIdInterceptor());
-  // const port = process.env.PORT || DEFAULT_PORT;
   const port = DEFAULT_PORT;
   await app.listen(port);
   Logger.log(

@@ -7,10 +7,10 @@ export function getRabbitMQOptions(nameSpace: string) {
       exchanges: [
         {
           name: config.get<string>(`${nameSpace}.exchange`),
-          type: 'direct'
-        }
+          type: 'direct',
+        },
       ],
-      uri:getRabbitMQConnectionString({
+      uri: getRabbitMQConnectionString({
         host: config.get<string>(`${nameSpace}.host`),
         password: config.get<string>(`${nameSpace}.password`),
         user: config.get<string>(`${nameSpace}.user`),
@@ -19,6 +19,6 @@ export function getRabbitMQOptions(nameSpace: string) {
       connectionInitOptions: { wait: false },
       enableControllerDiscovery: true,
     }),
-    inject: [ConfigService]
-  }
+    inject: [ConfigService],
+  };
 }

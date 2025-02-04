@@ -9,14 +9,11 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { CheckAuthGuard } from './guards/check-auth.guard';
 
-
-
 @ApiTags('users')
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
 export class UsersController {
   constructor(private readonly httpService: HttpService) {}
-
   
   @ApiResponse({
     type: UserRdo,
