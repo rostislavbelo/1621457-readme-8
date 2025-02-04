@@ -8,6 +8,7 @@ import {
   Post,
   PostTypes,
   SortType,
+  SortDirection,
 } from '@project/shared/core';
 import { BlogPostFactory } from './blog-post.factory';
 import { PrismaClientService } from '@project/blog-models';
@@ -197,6 +198,29 @@ export class BlogPostRepository extends BasePostgresRepository<
         userId_postId: { userId, postId },
       },
     });
+  }
+
+  public async getPostsToNotify() {
+    const lastNotify = await this.client.notification.findFirst({
+      orderBy: {
+        updatedAt: SortDirection.Desc,
+      },
+    });
+    const where: Prisma.PostWhereInput = {};
+    if (lastNotify) {
+      where.createdAt = { gt: lastNotify.updatedAt };
+    }
+    const records = await this.client.post.findMany({
+      where,
+      orderBy: { createdAt: SortDirection.Desc },
+      include: defaultInclude,
+    });
+    return records.map((record) =>
+      this.createEntityFromDocument(this.transformRawDocument(record))
+    );
+  }
+  public async makeNotifyRecord() {
+    await this.client.notification.create({ data: {} });
   }
 
   private transformRawDocument(

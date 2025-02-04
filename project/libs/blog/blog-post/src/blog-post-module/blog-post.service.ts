@@ -135,4 +135,11 @@ export class BlogPostService {
     }
     return this.blogCommentService.getComments(postId, query);
   }
+
+  public async getPostsToNotify() {
+    return this.blogPostRepository.getPostsToNotify();
+  }
+  public async makeNotifyRecord() {
+    await this.blogPostRepository.makeNotifyRecord();
+  }
 }

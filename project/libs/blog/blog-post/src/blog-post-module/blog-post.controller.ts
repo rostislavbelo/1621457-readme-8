@@ -19,7 +19,6 @@ import {
   import { CreatePostDto } from './dto/create-post.dto';
   import { UpdatePostDto } from './dto/update-post.dto';
   import {
-    BlogCommentService,
     CommentRdo,
     CreateCommentDto,
     BlogCommentQuery,
@@ -28,11 +27,12 @@ import {
   import { ApiResponse, ApiTags } from '@nestjs/swagger';
   import { BlogPostResponseMessages } from './blog-post.constant';
   import { AuthorIdDto } from './dto/author-id.dto';
+  import { BlogNotificationsService } from '@project/blog-notifications';
   
   @ApiTags('posts')
   @Controller('posts')
   export class BlogPostController {
-    constructor(private readonly blogPostService: BlogPostService, private readonly blogCommentService: BlogCommentService) {}
+    constructor(private readonly blogPostService: BlogPostService, private readonly notificationsService: BlogNotificationsService) {}
   
     @ApiResponse({
       type: BlogPostRdo,

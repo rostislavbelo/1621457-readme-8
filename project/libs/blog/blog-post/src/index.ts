@@ -11,3 +11,4 @@ export {
   export { BlogPostResponseMessages } from './blog-post-module/blog-post.constant';
   export { BlogPostWithPaginationRdo } from './blog-post-module/rdo/blog-post-with-pagination.rdo';
   export { BlogPostQuery } from './blog-post-module/blog-post.query';
+  export { BlogPostEntity } from './blog-post-module/blog-post.entity';

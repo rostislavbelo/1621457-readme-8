@@ -415,4 +415,20 @@ export class BlogController {
 
     return data;
   }
+
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: BlogPostResponseMessages.NotificationsSent,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Get('notify')
+  public async notifyNewPosts() {
+    await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Posts}/notify`
+    );
+  }
 }

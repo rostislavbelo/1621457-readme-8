@@ -21,4 +21,5 @@ export const BlogPostResponseMessages = {
   ValidationError: 'Validation error',
   CommentCreated: 'Comment was created',
   CommentsFound: 'Comments were found',
+  NotificationsSent: 'Notifications were sent',
 } as const;

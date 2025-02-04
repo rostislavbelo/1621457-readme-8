@@ -129,8 +129,8 @@ GET http://localhost:3000/api/posts/392d4c1b-de74-49d0-b325-b07cbbaebdf3 HTTP/1.
 ###
 
 # Add like to post
-POST http://localhost:3000/api/posts/addLike/999255f7-70e9-40cb-90dc-3618641319e3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3NjYyOSwiZXhwIjoxNzM4Njc3NTI5fQ.-KYSAwYkUIUM1bjEmgN5nqbSU0pwQBiaKCs9DfyEBZ8
+POST http://localhost:3000/api/posts/addLike/ab04593b-da99-4fe3-8b4b-e06d82e2efdd
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3OTA3MywiZXhwIjoxNzM4Njc5OTczfQ.j5NCEru1tPUsM8Y5_swrWl7p-1Hddbjkicsyeur7r0w
 
 ###
 
