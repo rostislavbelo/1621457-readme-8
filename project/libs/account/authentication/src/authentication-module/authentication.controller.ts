@@ -59,7 +59,7 @@ export class AuthenticationController {
   })
   @ApiResponse({
     status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: AuthenticationResponseMessage.ServerError
+    description: AuthenticationResponseMessage.ServerError,
   })
   @UseGuards(JwtAuthGuard)
   @Post('password')
@@ -85,8 +85,7 @@ export class AuthenticationController {
   @Post('login')
   public async login(@Req() { user }: RequestWithUser) {
     const userToken = await this.authService.createUserToken(user);
-    return fillDto(LoggedUserRdo, { ...user.toPOJO(), ...userToken }
-    );
+    return fillDto(LoggedUserRdo, { ...user.toPOJO(), ...userToken });
   }
 
   @ApiResponse({
@@ -98,11 +97,6 @@ export class AuthenticationController {
     status: HttpStatus.NOT_FOUND,
     description: AuthenticationResponseMessage.UserNotFound,
   })
-  @ApiResponse({
-    status: HttpStatus.UNAUTHORIZED,
-    description: AuthenticationResponseMessage.JwtAuthFailed,
-  })
-  @UseGuards(JwtAuthGuard)
   @Get(':id')
   public async show(@Param('id', MongoIdValidationPipe) id: string) {
     const existUser = await this.authService.getUser(id);
@@ -162,7 +156,6 @@ export class AuthenticationController {
     await this.authService.toggleSubscription(user.sub, id);
   }
 
-  
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: AuthenticationResponseMessage.PostsCountSuccess,
@@ -182,6 +175,7 @@ export class AuthenticationController {
   ) {
     await this.authService.incrementPostsCount(id);
   }
+
   @ApiResponse({
     status: HttpStatus.NO_CONTENT,
     description: AuthenticationResponseMessage.PostsCountSuccess,
@@ -194,8 +188,8 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: AuthenticationResponseMessage.JwtAuthFailed,
   })
-  @HttpCode(HttpStatus.NO_CONTENT)
   @Post('decrementPostsCount/:id')
+  @HttpCode(HttpStatus.NO_CONTENT)
   public async decrementPostsCount(
     @Param('id', MongoIdValidationPipe) id: string
   ) {

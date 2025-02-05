@@ -1,6 +1,30 @@
 import { HttpService } from '@nestjs/axios';
-import { Body, Controller, Post, Req, UseFilters, HttpStatus, FileTypeValidator,  MaxFileSizeValidator, ParseFilePipe, UploadedFile, UseInterceptors, UseGuards, Param, Get, HttpCode} from '@nestjs/common';
-import { LoginUserDto, AuthenticationResponseMessage, LoggedUserRdo, UserRdo, ChangePasswordDto, TokenPairRdo, UserDetailsRdo } from '@project/authentication';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  UseFilters,
+  HttpStatus,
+  FileTypeValidator,
+  MaxFileSizeValidator,
+  ParseFilePipe,
+  UploadedFile,
+  UseInterceptors,
+  UseGuards,
+  Param,
+  Get,
+  HttpCode,
+} from '@nestjs/common';
+import {
+  LoginUserDto,
+  AuthenticationResponseMessage,
+  LoggedUserRdo,
+  UserRdo,
+  ChangePasswordDto,
+  TokenPairRdo,
+  UserDetailsRdo,
+} from '@project/authentication';
 import { ApplicationServiceURL } from './app.config';
 import { AxiosExceptionFilter } from './filters/axios-exception.filter';
 import { ApiResponse, ApiTags, ApiConsumes } from '@nestjs/swagger';
@@ -8,13 +32,14 @@ import 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserRegisterDto } from './dto/user-register.dto';
 import { CheckAuthGuard } from './guards/check-auth.guard';
+import { substituteFileUrl } from './helpers/substitute-file-url';
 
 @ApiTags('users')
 @Controller('users')
 @UseFilters(AxiosExceptionFilter)
 export class UsersController {
   constructor(private readonly httpService: HttpService) {}
-  
+
   @ApiResponse({
     type: UserRdo,
     status: HttpStatus.CREATED,
@@ -161,6 +186,13 @@ export class UsersController {
         },
       }
     );
+
+    if (data?.['avatar']) {
+      data['avatar'] = await substituteFileUrl(
+        this.httpService,
+        data?.['avatar']
+      );
+    }
 
     return data;
   }

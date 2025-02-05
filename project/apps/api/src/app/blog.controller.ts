@@ -26,7 +26,7 @@ import { ApplicationServiceURL } from './app.config';
 import { InjectAuthorIdInterceptor } from '@project/interceptors';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { PostCreateDto } from './dto/post-create.dto';
-import { PostTypes } from '@project/shared/core';
+import { PostTypes, Comment, Post as PostType } from '@project/shared/core';
 import { ApiResponse } from '@nestjs/swagger';
 import {
   BlogPostQuery,
@@ -41,11 +41,29 @@ import {
   BlogCommentWithPaginationRdo,
   CommentRdo,
 } from '@project/blog-comment';
+import { transformPost } from './helpers/transform-post';
+import { fillAuthorInfo } from './helpers/fill-author-info';
 
 @Controller('posts')
 @UseFilters(AxiosExceptionFilter)
 export class BlogController {
   constructor(private readonly httpService: HttpService) {}
+
+  @ApiResponse({
+    status: HttpStatus.NO_CONTENT,
+    description: BlogPostResponseMessages.NotificationsSent,
+  })
+  @ApiResponse({
+    status: HttpStatus.INTERNAL_SERVER_ERROR,
+    description: BlogPostResponseMessages.ServerError,
+  })
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Get('notify')
+  public async notifyNewPosts() {
+    await this.httpService.axiosRef.get(
+      `${ApplicationServiceURL.Posts}/notify`
+    );
+  }
 
   @ApiResponse({
     type: BlogPostRdo,
@@ -129,9 +147,12 @@ export class BlogController {
   })
   @Get(':id')
   public async show(@Param('id') id: string) {
-    const { data } = await this.httpService.axiosRef.get(
+    const { data } = await this.httpService.axiosRef.get<PostType>(
       `${ApplicationServiceURL.Posts}/${id}`
     );
+
+    await transformPost(this.httpService, data);
+
     return data;
   }
 
@@ -146,12 +167,15 @@ export class BlogController {
   })
   @Get('/')
   public async index(@Query() query: BlogPostQuery) {
-    const { data } = await this.httpService.axiosRef.get(
-      `${ApplicationServiceURL.Posts}`,
-      {
-        params: query,
-      }
-    );
+    const { data } = await this.httpService.axiosRef.get<{
+      entities: PostType[];
+    }>(`${ApplicationServiceURL.Posts}`, {
+      params: query,
+    });
+
+    for (const post of data.entities) {
+      await transformPost(this.httpService, post);
+    }
 
     return data;
   }
@@ -406,29 +430,16 @@ export class BlogController {
     @Param('postId') postId: string,
     @Query() query: BlogCommentQuery
   ) {
-    const { data } = await this.httpService.axiosRef.get(
-      `${ApplicationServiceURL.Posts}/${postId}/comments`,
-      {
-        params: query,
-      }
-    );
+    const { data } = await this.httpService.axiosRef.get<{
+      entities: Comment[];
+    }>(`${ApplicationServiceURL.Posts}/${postId}/comments`, {
+      params: query,
+    });
+
+    for (const comment of data.entities) {
+      await fillAuthorInfo(this.httpService, comment);
+    }
 
     return data;
-  }
-
-  @ApiResponse({
-    status: HttpStatus.NO_CONTENT,
-    description: BlogPostResponseMessages.NotificationsSent,
-  })
-  @ApiResponse({
-    status: HttpStatus.INTERNAL_SERVER_ERROR,
-    description: BlogPostResponseMessages.ServerError,
-  })
-  @HttpCode(HttpStatus.NO_CONTENT)
-  @Get('notify')
-  public async notifyNewPosts() {
-    await this.httpService.axiosRef.get(
-      `${ApplicationServiceURL.Posts}/notify`
-    );
   }
 }

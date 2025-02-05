@@ -40,7 +40,7 @@ POST http://localhost:3000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "robocop99@notfound.local",
+  "email": "robocop3@notfound.local",
   "password": "123456"
 }
 
@@ -79,15 +79,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyY
 
 # Create a new post
 POST http://localhost:3000/api/posts HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2EyNzRhYWJhZjFiMmMzN2RmZDU5N2EiLCJlbWFpbCI6InJvYm9jb3A5OUBub3Rmb3VuZC5sb2NhbCIsIm5hbWUiOiJLZWtzIiwiaWF0IjoxNzM4NzAyNTE2LCJleHAiOjE3Mzg3MDM0MTZ9.E2KbaPuk47g8P7FLaX9lUaULC-8Z5Lv3DzJNAnGpdsQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDI2NDUsImV4cCI6MTczODcwMzU0NX0.t4qou9O_n098XDKzV5DR-wXjePh5hPf15YCGXOazY_c
 Content-Type: application/json
 
 {
   "type": "TEXT",
   "tags": ["cats", "new"],
   "content": {
-    "title": "Тест API Gateway11 Тест API Gateway",
-    "teaser": "Текст с анонсом публикации11. Минимальная длина 50 символов, максимальная 255.",
+    "title": "Тест API Gateway22 Тест API Gateway",
+    "teaser": "Текст с анонсом публикации22. Минимальная длина 50 символов, максимальная 255.",
     "text": "Текст публикации (обязательно). Минимальная длина 100 символов, максимальная 1024 символа. Текст публикации (обязательно)."
   }
 }
@@ -128,25 +128,25 @@ GET http://localhost:3000/api/posts/392d4c1b-de74-49d0-b325-b07cbbaebdf3 HTTP/1.
 ###
 
 # Add like to post
-POST http://localhost:3000/api/posts/addLike/6d308040-96a2-4162-bea6-2338e9976540
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY5NzY1NywiZXhwIjoxNzM4Njk4NTU3fQ.1bZVm9KsnecMBdZ9oaBfZXPy6I1jFpbJthp1OwSgPCA
+POST http://localhost:3000/api/posts/addLike/c23ef44f-ac46-4c2c-8840-785992ffbce5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDI2NDUsImV4cCI6MTczODcwMzU0NX0.t4qou9O_n098XDKzV5DR-wXjePh5hPf15YCGXOazY_c
 ###
 
 # Delete like to post
-POST http://localhost:3000/api/posts/deleteLike/0ac9ffad-9145-427d-b1ab-46fe4a5a6120
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY5ODc2MCwiZXhwIjoxNzM4Njk5NjYwfQ.jLGqoo_gMYmEhGHbhPXIDVxTVqcaFxG7zHOZ-N4BTws
+POST http://localhost:3000/api/posts/deleteLike/c23ef44f-ac46-4c2c-8840-785992ffbce5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDI2NDUsImV4cCI6MTczODcwMzU0NX0.t4qou9O_n098XDKzV5DR-wXjePh5hPf15YCGXOazY_c
 
 ###
 
 # Make a repost
-POST http://localhost:3000/api/posts/repost/0ac9ffad-9145-427d-b1ab-46fe4a5a6120
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+POST http://localhost:3000/api/posts/repost/c23ef44f-ac46-4c2c-8840-785992ffbce5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDI2NDUsImV4cCI6MTczODcwMzU0NX0.t4qou9O_n098XDKzV5DR-wXjePh5hPf15YCGXOazY_c
 
 ###
 
 # Delete a post
-DELETE http://localhost:3000/api/posts/0ac9ffad-9145-427d-b1ab-46fe4a5a6120
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+DELETE http://localhost:3000/api/posts/7664c35d-6356-4896-a96b-0ad97a5f2c9e
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDMwMjQsImV4cCI6MTczODcwMzkyNH0.hy2-157J4cQv4kW_lWnIWFYwnccPxUsEP7g8va8LFSE
 
 ###
 
@@ -168,8 +168,8 @@ Content-Type: application/json
 ###
 
 # Create a comment to a post
-POST http://localhost:3000/api/posts/0ac9ffad-9145-427d-b1ab-46fe4a5a6120/comments
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+POST http://localhost:3000/api/posts/6d308040-96a2-4162-bea6-2338e9976540/comments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDMzMzIsImV4cCI6MTczODcwNDIzMn0.Hs-YCSnMejyULwBfBc6LCZpBTZc2Dvyc3aQ5F3udz1E
 Content-Type: application/json
 
 {
@@ -179,13 +179,13 @@ Content-Type: application/json
 ###
 
 # Get comments to a post
-GET http://localhost:3000/api/posts/0ac9ffad-9145-427d-b1ab-46fe4a5a6120/comments
+GET http://localhost:3000/api/posts/6d308040-96a2-4162-bea6-2338e9976540/comments
 
 ###
 
 # Delete comment
-DELETE  http://localhost:3000/api/comments/0ac9ffad-9145-427d-b1ab-46fe4a5a6120
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjEyYzI5YjRkZjllNTJmMDgwMjUiLCJlbWFpbCI6InJvYm9jb3BAbm90Zm91bmQubG9jYWwiLCJuYW1lIjoiS2VrcyIsImlhdCI6MTczODY3MjEyMSwiZXhwIjoxNzM4NjczMDIxfQ.ZgrhL9_zsrx9usP2O0aYzOS-Vugjlh3uXIoSU1UyI34
+DELETE  http://localhost:3000/api/comments/04deb021-3e6e-4355-b676-09f042396456
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDMzMzIsImV4cCI6MTczODcwNDIzMn0.Hs-YCSnMejyULwBfBc6LCZpBTZc2Dvyc3aQ5F3udz1E
 
 ###
 
