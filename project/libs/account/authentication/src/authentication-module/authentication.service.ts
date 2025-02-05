@@ -18,6 +18,7 @@ import { Token, User } from '@project/shared/core';
 import { jwtConfig } from '@project/account-config';
 import { RefreshTokenService } from '../refresh-token-module/refresh-token.service';
 import { createJWTPayload } from '@project/helpers';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 
 @Injectable()
@@ -53,6 +54,25 @@ export class AuthenticationService {
     await this.blogUserRepository.save(userEntity);
 
     return userEntity;
+  }
+
+  public async changePassword(id: string, dto: ChangePasswordDto) {
+    const { oldPassword, newPassword } = dto;
+    const existUser = await this.blogUserRepository.findById(id);
+
+    if (!existUser) {
+      throw new UnauthorizedException(AuthMessages.UserNotFound);
+    }
+
+    if (!(await existUser.comparePassword(oldPassword))) {
+      throw new UnauthorizedException(AuthMessages.OldPasswordWrong);
+    }
+
+    await existUser.setPassword(newPassword);
+
+    await this.blogUserRepository.update(existUser);
+
+    return existUser;
   }
 
   public async verifyUser(dto: LoginUserDto) {
@@ -116,5 +136,56 @@ export class AuthenticationService {
     }
 
     return existUser;
+  }
+
+  
+  public async toggleSubscription(subscriberId, subscribedToId) {
+    const subscriber = await this.blogUserRepository.findById(subscriberId);
+
+    if (!subscriber) {
+      throw new NotFoundException(
+        `Current user (subscriber) with id ${subscriberId} not found`
+      );
+    }
+
+    const subscribedTo = await this.blogUserRepository.findById(subscribedToId);
+
+    if (!subscribedTo) {
+      throw new NotFoundException(`User with id ${subscribedToId} not found`);
+    }
+
+    if (subscriber.subscriptions.includes(subscribedToId)) {
+      subscriber.subscriptions = subscriber.subscriptions.filter(
+        (id) => id !== subscribedToId
+      );
+      subscribedTo.subscribersCount -= 1;
+    } else {
+      subscriber.subscriptions.push(subscribedToId);
+      subscribedTo.subscribersCount += 1;
+    }
+
+    await Promise.all([
+      this.blogUserRepository.update(subscriber),
+      this.blogUserRepository.update(subscribedTo),
+    ]);
+
+    return subscriber;
+  }
+
+  public async incrementPostsCount(userId: string) {
+    const existUser = await this.blogUserRepository.findById(userId);
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    existUser.postsCount += 1;
+    await this.blogUserRepository.update(existUser);
+  }
+  public async decrementPostsCount(userId: string) {
+    const existUser = await this.blogUserRepository.findById(userId);
+    if (!existUser) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    existUser.postsCount -= 1;
+    await this.blogUserRepository.update(existUser);
   }
 }

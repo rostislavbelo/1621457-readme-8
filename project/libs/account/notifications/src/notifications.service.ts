@@ -19,7 +19,7 @@ export class NotificationsService {
     return this.rabbitClient.publish(
       this.rabbitOptions.exchange,
       RabbitRouting.AddSubscriber,
-      { ...dto }
+      { type: RabbitRouting.AddSubscriber, subscriber: dto }
     );
   }
 }

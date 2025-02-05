@@ -16,10 +16,12 @@ import {
       const response = ctx.getResponse<Response>();
       const status = error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
       const message = error.response?.statusText || INTERNAL_SERVER_ERROR_MESSAGE;
+      const details = error.response?.data?.['message'];
   
       response.status(status).json({
         statusCode: status,
         message,
+        details
       });
     }
   }

@@ -6,7 +6,7 @@ export type BlogContents = {
     description?: string;
   };
   [PostTypes.Photo]: {
-    url: string;
+    pictureId: string;
   };
   [PostTypes.Quote]: {
     quote: string;

@@ -1,15 +1,17 @@
 import { registerAs } from '@nestjs/config';
 import * as Joi from 'joi';
 
-const DEFAULT_PORT = 3003;
-const DEFAULT_MONGO_PORT = 27017;
 const ENVIRONMENTS = ['development', 'production', 'stage'] as const;
-const DEFAULT_RABBIT_PORT = 5672;
-const DEFAULT_SMTP_PORT = 25;
+const DefaultPorts = {
+  App: 3003,
+  Mongo: 27017,
+  Rabbit: 5672,
+  Smtp: 25,
+} as const;
 
 type Environment = (typeof ENVIRONMENTS)[number];
 
-export interface NotifyConfig {
+export interface NotificationsConfig {
   environment: string;
   port: number;
   db: {
@@ -41,7 +43,7 @@ const validationSchema = Joi.object({
   environment: Joi.string()
     .valid(...ENVIRONMENTS)
     .required(),
-  port: Joi.number().port().default(DEFAULT_PORT),
+  port: Joi.number().port().default(DefaultPorts.App),
   db: Joi.object({
     host: Joi.string().valid().hostname(),
     port: Joi.number().port(),
@@ -53,21 +55,21 @@ const validationSchema = Joi.object({
   rabbit: Joi.object({
     host: Joi.string().valid().hostname().required(),
     password: Joi.string().required(),
-    port: Joi.number().port().default(DEFAULT_RABBIT_PORT),
+    port: Joi.number().port().default(DefaultPorts.Rabbit),
     user: Joi.string().required(),
     queue: Joi.string().required(),
     exchange: Joi.string().required(),
   }),
   mail: Joi.object({
     host: Joi.string().valid().hostname().required(),
-    port: Joi.number().port().default(DEFAULT_SMTP_PORT),
+    port: Joi.number().port().default(DefaultPorts.Smtp),
     user: Joi.string().required(),
     password: Joi.string().required(),
     from: Joi.string().required(),
-  })
+  }),
 });
 
-function validateConfig(config: NotifyConfig): void {
+function validateConfig(config: NotificationsConfig): void {
   const { error } = validationSchema.validate(config, { abortEarly: true });
   if (error) {
     throw new Error(
@@ -76,14 +78,14 @@ function validateConfig(config: NotifyConfig): void {
   }
 }
 
-function getConfig(): NotifyConfig {
-  const config: NotifyConfig = {
+function getConfig(): NotificationsConfig {
+  const config: NotificationsConfig = {
     environment: process.env.NODE_ENV as Environment,
-    port: parseInt(process.env.PORT || `${DEFAULT_PORT}`, 10),
+    port: parseInt(process.env.PORT || `${DefaultPorts.App}`, 10),
     db: {
       host: process.env.MONGO_HOST,
       port: parseInt(
-        process.env.MONGO_PORT ?? DEFAULT_MONGO_PORT.toString(),
+        process.env.MONGO_PORT ?? DefaultPorts.Mongo.toString(),
         10
       ),
       name: process.env.MONGO_DB,
@@ -95,7 +97,7 @@ function getConfig(): NotifyConfig {
       host: process.env.RABBIT_HOST,
       password: process.env.RABBIT_PASSWORD,
       port: parseInt(
-        process.env.RABBIT_PORT ?? DEFAULT_RABBIT_PORT.toString(),
+        process.env.RABBIT_PORT ?? DefaultPorts.Rabbit.toString(),
         10
       ),
       user: process.env.RABBIT_USER,
@@ -105,12 +107,13 @@ function getConfig(): NotifyConfig {
     mail: {
       host: process.env.MAIL_SMTP_HOST,
       port: parseInt(
-        process.env.MAIL_SMTP_PORT ?? DEFAULT_SMTP_PORT.toString(), 10
+        process.env.MAIL_SMTP_PORT ?? DefaultPorts.Smtp.toString(),
+        10
       ),
       user: process.env.MAIL_USER_NAME,
       password: process.env.MAIL_USER_PASSWORD,
       from: process.env.MAIL_FROM,
-    }
+    },
   };
 
   validateConfig(config);

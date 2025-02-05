@@ -1,0 +1,15 @@
+<h2>Здравствуйте,
+  {{subscriber.name}}Новые публикации в блоге:</h2>
+<ul class='post-list'>
+  {{#each posts}}
+    <li>
+      <a href='http://localhost:3000/api/posts/{{this.id}}'>
+        {{this.type}}
+        post of user
+        {{this.authorId}}
+        created at
+        {{this.createdAt}}
+      </a>
+    </li>
+  {{/each}}
+</ul>

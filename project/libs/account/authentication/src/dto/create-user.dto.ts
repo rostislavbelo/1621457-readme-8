@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, IsUrl, Length } from 'class-validator';
+import { IsEmail, IsString, Length, IsMongoId, IsOptional } from 'class-validator';
 import { AuthenticationValidateMessage } from '../authentication-module/authentication.constant';
 
 export class CreateUserDto {
@@ -19,11 +19,12 @@ export class CreateUserDto {
     public name: string;
 
     @ApiProperty({
-      description: 'User avatar path',
-      example: '/images/user.png',
+      description: 'User avatar file id',
+      example: '9de26ecfgyuierrkkffd67865f49e2',
       required: false,
     })
-    @IsUrl()
+    @IsMongoId()
+    @IsOptional()
     public avatar?: string;
 
     @ApiProperty({

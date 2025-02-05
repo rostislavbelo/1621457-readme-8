@@ -1,8 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { BlogCommentRepository } from './blog-comment.repository';
 import { BlogCommentEntity } from './blog-comment.entity';
 import { CreateCommentDto } from './dto/create-comment.dto';
+import { BlogCommentQuery } from './blog-comment.query';
+import { PaginationResult } from '@project/shared/core';
 
 @Injectable()
 export class BlogCommentService {
@@ -12,8 +17,11 @@ export class BlogCommentService {
     return this.blogCommentRepository.findById(id);
   }
 
-  public async getComments(postId: string): Promise<BlogCommentEntity[]> {
-    return await this.blogCommentRepository.findByPostId(postId);
+  public async getComments(
+    postId: string,
+    query: BlogCommentQuery
+  ): Promise<PaginationResult<BlogCommentEntity>> {
+    return await this.blogCommentRepository.findByPostId(postId, query);
   }
 
   public async createComment(
@@ -26,25 +34,18 @@ export class BlogCommentService {
     return newComment;
   }
 
-  public async deleteComment(id: string): Promise<void> {
+  public async deleteComment(id: string, authorId: string): Promise<void> {
+    const existsComment = await this.blogCommentRepository.findById(id);
+    if (!existsComment) {
+      throw new NotFoundException(`Comment with id ${id} was not found.`);
+    }
+    if (existsComment.authorId !== authorId) {
+      throw new ForbiddenException('Users can only delete their own comments.');
+    }
     try {
       await this.blogCommentRepository.deleteById(id);
     } catch {
       throw new NotFoundException(`Comment with ID ${id} not found`);
     }
   }
-
-  // public async updateComment(
-  //   id: string,
-  //   dto: UpdateCommentDto
-  // ): Promise<BlogCommentEntity> {
-  //   const blogCommentEntity = new BlogCommentEntity(dto);
-
-  //   try {
-  //     await this.blogCommentRepository.update(blogCommentEntity);
-  //     return blogCommentEntity;
-  //   } catch {
-  //     throw new NotFoundException(`Comment with ID ${id} not found`);
-  //   }
-  // }
 }

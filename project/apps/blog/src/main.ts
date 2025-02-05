@@ -10,8 +10,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-  .setTitle('The «Blog» service')
-  .setDescription('Blog service API')
+  .setTitle('The API Gateway')
+  .setDescription('The API Gateway API for frontend')
   .setVersion('1.0')
   .build();
 
@@ -20,7 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('spec', app, document);
 
-  const port = process.env.PORT || DEFAULT_PORT;
+  const port = DEFAULT_PORT;
 
   app.useGlobalPipes(
     new ValidationPipe({
