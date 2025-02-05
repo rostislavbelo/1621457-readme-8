@@ -30,6 +30,7 @@ export class EmailSubscriberRepository extends BaseMongoRepository<
 
   public async findAll() {
     const documents = await this.model.find();
+
     return documents.map((document) => this.createEntityFromDocument(document));
   }
 }

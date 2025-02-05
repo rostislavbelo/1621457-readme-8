@@ -23,7 +23,7 @@ import { EmailSubscriberController } from './email-subscriber.controller';
       RabbitMQModule,
       getRabbitMQOptions('application.rabbit')
     ),
-    MailModule
+    MailModule,
   ],
   controllers: [EmailSubscriberController],
   providers: [

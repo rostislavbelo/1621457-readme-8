@@ -60,6 +60,7 @@ export class BlogCommentRepository extends BasePostgresRepository<
     const take = query?.limit;
     const where: Prisma.CommentWhereInput = {};
     where.postId = postId;
+
     const [records, commentCount] = await Promise.all([
       this.client.comment.findMany({
         where,

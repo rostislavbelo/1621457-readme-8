@@ -21,10 +21,13 @@ export class EmailSubscriberController {
   public async create(data: { type: string; subscriber: CreateSubscriberDto }) {
     console.log(`Notify create type: ${data?.type}`);
     if (data?.type !== RabbitRouting.AddSubscriber) return;
+
     console.log('notify create');
+
     await this.subscriberService.addSubscriber(data.subscriber);
     await this.mailService.sendNotifyNewSubscriber(data.subscriber);
   }
+
   @RabbitSubscribe({
     exchange: 'readme.notify',
     routingKey: RabbitRouting.NotifyNewPosts,
@@ -33,8 +36,11 @@ export class EmailSubscriberController {
   public async notifyNewPosts(data: { type: string; posts: Post[] }) {
     console.log(`Notify new posts type: ${data?.type}`);
     if (data?.type !== RabbitRouting.NotifyNewPosts) return;
+
     console.log('notify new posts');
+
     const subscribers = await this.subscriberService.getAllSubscribers();
+
     for (const subscriber of subscribers) {
       await this.mailService.sendNotifyNewPosts(
         data?.posts,
