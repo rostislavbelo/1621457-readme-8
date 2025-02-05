@@ -31,15 +31,27 @@ export class MailService {
   }
 
   public async sendNotifyNewPosts(posts: Post[], subscriber: Subscriber) {
-    await this.mailerService.sendMail({
-      from: this.notificationsConfig.mail.from,
-      to: subscriber.email,
-      subject: EMAIL_NOTIFTY_NEW_POSTS_SUBJECT,
-      template: './new-posts',
-      context: {
-        subscriber,
-        posts,
-      },
-    });
+    if (posts?.length) {
+      await this.mailerService.sendMail({
+        from: this.notificationsConfig.mail.from,
+        to: subscriber.email,
+        subject: EMAIL_NOTIFTY_NEW_POSTS_SUBJECT,
+        template: './new-posts',
+        context: {
+          subscriber,
+          posts,
+        },
+      });
+    } else {
+      await this.mailerService.sendMail({
+        from: this.notificationsConfig.mail.from,
+        to: subscriber.email,
+        subject: EMAIL_NOTIFTY_NEW_POSTS_SUBJECT,
+        template: './no-new-posts',
+        context: {
+          subscriber,
+        },
+      });
+    }
   }
 }
