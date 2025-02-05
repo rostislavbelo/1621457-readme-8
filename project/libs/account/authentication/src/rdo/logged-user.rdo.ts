@@ -25,7 +25,7 @@ export class LoggedUserRdo {
 
   @ApiProperty({
     description: 'Refresh token',
-    example: 'kjfdvnjfvnijvngjuinvogtunotgnbo.hbuhvbuybgiuhoinujgftuygoijk;mopkpihjpihiugyfyhuiohiyufytft7fiuhohiygvioijpojogiyfiyhgpiojoihi9lijoijhohiugiuhvytytdctxredcubiubiujniuni',
+    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2N2ExZjJiMjI5YjRkZjllNTJmMDgwMzYiLCJlbWFpbCI6InJvYm9jb3AzQG5vdGZvdW5kLmxvY2FsIiwibmFtZSI6Iktla3MiLCJpYXQiOjE3Mzg3MDMzMzIsImV4cCI6MTczODcwNDIzMn0.Hs-YCSnMejyULwBfBc6LCZpBTZc2Dvyc3aQ5F3udz1E',
   })
   @Expose()
   public refreshToken: string;

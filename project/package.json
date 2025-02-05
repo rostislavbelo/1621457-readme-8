@@ -2,7 +2,18 @@
   "name": "@project/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "account:docker-up": "docker compose --file ./apps/account/docker-compose.dev.yml --project-name readme-account --env-file ./apps/account/account.env up -d",
+    "account:docker-down": "docker compose --file ./apps/account/docker-compose.dev.yml --project-name readme-account --env-file ./apps/account/account.env down",
+    "blog:docker-up": "docker compose --file ./apps/blog/docker-compose.dev.yml --env-file ./apps/blog/blog.env --project-name blog-readme up -d",
+    "blog:docker-down": "docker compose --file ./apps/blog/docker-compose.dev.yml --env-file ./apps/blog/blog.env --project-name blog-readme down",
+    "notify:docker-up": "docker compose --file ./apps/notify/docker-compose.dev.yml --env-file ./apps/notify/notify.env --project-name readme-notify up -d",
+    "notify:docker-down": "docker compose --file ./apps/notify/docker-compose.dev.yml --env-file ./apps/notify/notify.env --project-name readme-notify down",
+    "storage:docker-up": "docker compose --file ./apps/storage/docker-compose.dev.yml --env-file ./apps/storage/storage.env --project-name readme-storage up -d",
+    "storage:docker-down": "docker compose --file ./apps/storage/docker-compose.dev.yml --env-file ./apps/storage/storage.env --project-name readme-storage down",
+    "all:docker-up": "npm run account:docker-up && npm run notify:docker-up && npm run blog:docker-up && npm run storage:docker-up",
+    "all:docker-down": "npm run account:docker-down && npm run notify:docker-down && npm run blog:docker-down && npm run storage:docker-down"
+  },
   "private": true,
   "dependencies": {
     "@golevelup/nestjs-rabbitmq": "^5.6.1",
