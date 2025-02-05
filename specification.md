@@ -10,7 +10,10 @@
 "account.env-example" -> "account.env"  
 "blog.env-example" -> "blog.env" 
 "notify.env-example" -> "notify.env" 
-"storage.env-example" -> "storage.env"  
+"storage.env-example" -> "storage.env"
+
+для ORM Prisma:
+"project\libs\blog\models\prisma\.env-example" -> ".env"
 
 ## 3. Установка npm пакетов
 
